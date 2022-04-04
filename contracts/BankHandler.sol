@@ -1,0 +1,13 @@
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+contract BankHandler {
+
+  function withdrawMoney() public {
+
+  }
+
+  function refundMoney() public {
+
+  }
+}

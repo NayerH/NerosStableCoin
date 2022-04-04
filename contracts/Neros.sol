@@ -1,6 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 import "./ERC20.sol";
+import "./BankHandler.sol";
 
 contract Neros is ERC20{
     string public name;
@@ -8,17 +9,18 @@ contract Neros is ERC20{
     address public owner;
     uint public _totalSupply;
     uint8 public decimals;
-
+    BankHandler private bankHandler;
 
     mapping(address => uint) balances;
     mapping(address => mapping(address => uint)) allowed;
 
-    constructor() {
+    constructor(BankHandler _bankHandler) {
         name = "Neros";
         symbol = "NRO";
         owner = msg.sender;
         _totalSupply = 0;
         decimals = 6;
+        bankHandler = _bankHandler;
     }
 
     modifier isOwner () {
@@ -45,11 +47,13 @@ contract Neros is ERC20{
 
     function fiatToCoins(address to, uint tokens) public {
         //BANK DETAILS INPUT
+        bankHandler.withdrawMoney();
         //CALLS mintNewTokens
     }
 
     function coinsToFiat(address from, uint tokens) public {
         //BANK DETAILS INPUT
+        bankHandler.refundMoney();
         //CALLS burnTokens
     }
 
