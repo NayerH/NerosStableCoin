@@ -28,7 +28,7 @@ contract Neros is ERC20{
         _;
     }
 
-    function mintNewTokens(uint amount, address payable to) internal {
+    function mintNewTokens(uint amount, address to) internal {
         require(to != address(0), "Neros: To address cannot be a zero address for minting");
 
         _totalSupply += amount;
@@ -49,12 +49,14 @@ contract Neros is ERC20{
         //BANK DETAILS INPUT
         bankHandler.withdrawMoney();
         //CALLS mintNewTokens
+        mintNewTokens(tokens, to);
     }
 
     function coinsToFiat(address from, uint tokens) public {
         //BANK DETAILS INPUT
         bankHandler.refundMoney();
         //CALLS burnTokens
+        burnTokens(tokens, from);
     }
 
     function _transferFrom(address from, address payable to, uint tokens) internal {
