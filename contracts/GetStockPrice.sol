@@ -3,7 +3,7 @@ pragma solidity ^0.8.13;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
-contract ChainlinkExample is ChainlinkClient {
+contract GetStockPrice is ChainlinkClient {
   using Chainlink for Chainlink.Request;
 
   uint256 public currentPrice;
@@ -18,7 +18,7 @@ contract ChainlinkExample is ChainlinkClient {
     setChainlinkOracle(ORACLE_ADDRESS);
     owner = msg.sender;
   }
-  function requestBytes(string memory ticker) public onlyOwner
+  function requestStockPrice(string memory ticker) public onlyOwner
   {
     bytes32 specId = stringToBytes32(JOBID);
     Chainlink.Request memory req = buildChainlinkRequest(specId, address(this), this.fulfillBytes.selector);
