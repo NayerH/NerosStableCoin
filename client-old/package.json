@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ipfs-core": "^0.14.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "3.2.0",
@@ -28,5 +29,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-env": "7.14"
   }
 }

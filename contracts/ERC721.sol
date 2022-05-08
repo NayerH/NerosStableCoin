@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
@@ -9,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
 contract ERC721 is IERC721, IERC721Metadata {
   string public name;
   string public symbol;
+  address public owner;
 
   mapping(address => uint) private balances;
   mapping(uint => address) private owners;
@@ -16,28 +16,41 @@ contract ERC721 is IERC721, IERC721Metadata {
   mapping(address => mapping(address => bool)) private operatorApprovals;
   mapping(uint256 => string) private tokenURIs;
 
+  mapping(uint256 => bool) public isTransferable;
+  mapping(address => bool) public admins;
+
   constructor(string memory _name, string memory _symbol){
       name = _name;
       symbol = _symbol;
+      owner = msg.sender;
+      admins[owner] = true;
+  }
+  modifier onlyOwner() {
+      require(msg.sender == owner, "ERC721: Only owner is allowed to do this functionality");
+      _;
+  }
+  modifier onlyAdmin() {
+      require(admins[msg.sender], "ERC721: Only admins are allowed to do this functionality");
+      _;
   }
 
-  function balanceOf(address owner) public view returns (uint) {
-      require(owner != address(0), "ERC721: address owner cannot be the zero address");
-      return balances[owner];
+  function balanceOf(address _owner) public view returns (uint) {
+      require(_owner != address(0), "ERC721: address owner cannot be the zero address");
+      return balances[_owner];
   }
 
-  function ownerOf(uint tokenId) public view returns (address owner) {
+  function ownerOf(uint tokenId) public view returns (address) {
       require(owners[tokenId] != address(0), "ERC721: Token with entered ID does not exist");
       return owners[tokenId];
   }
 
-   function getApproved(uint tokenId) public view returns (address operator) {
+   function getApproved(uint tokenId) public view returns (address) {
        require(owners[tokenId] != address(0), "ERC721: Token with entered ID does not exist");
        return tokenApprovals[tokenId];
    }
 
-   function isApprovedForAll(address owner, address operator) public view returns (bool) {
-       return operatorApprovals[owner][operator];
+   function isApprovedForAll(address _owner, address operator) public view returns (bool) {
+       return operatorApprovals[_owner][operator];
    }
 
    function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) public {
@@ -57,7 +70,7 @@ contract ERC721 is IERC721, IERC721Metadata {
         require(from != address(0), "ERC721: from address entered cannot be the zero address");
         require(to != address(0), "ERC721: to address entered cannot be the zero address");
         require(owners[tokenId] == from, "ERC721: Token with entered ID is not owned by the from address");
-
+        require(isTransferable[tokenId], "ERC721: Token cannot be transfered yet as transfer of stock ownership is not yet verified");
         require(isApprovedOrIsOwner(msg.sender, tokenId), "ERC721: Sender is neither the owner nor approved to do this transaction");
 
         //reset approve for the token with a new owner
@@ -69,10 +82,18 @@ contract ERC721 is IERC721, IERC721Metadata {
         emit Transfer(from, to, tokenId);
    }
 
+   function setTransferable(uint tokenId, bool transferable) public onlyAdmin {
+        isTransferable[tokenId] = transferable;
+   }
+
+   function addOrRemoveAdmin(address admin, bool add) public onlyOwner {
+        admins[admin] = add;
+   }
+
    function approve(address to, uint256 tokenId) public {
-       address owner = owners[tokenId];
-       require(to != owner, "ERC721: owner cannot approve himself/herself");
-       require(msg.sender == owner || isApprovedForAll(owner, msg.sender), "ERC721: caller must own the token or be approved for all");
+       address _owner = owners[tokenId];
+       require(to != _owner, "ERC721: owner cannot approve himself/herself");
+       require(msg.sender == _owner || isApprovedForAll(_owner, msg.sender), "ERC721: caller must own the token or be approved for all");
        _approve(to, tokenId);
    }
 
@@ -115,6 +136,7 @@ contract ERC721 is IERC721, IERC721Metadata {
 
         _approve(address(0), tokenId);
         balances[msg.sender]--;
+        isTransferable[tokenId] = false;
 
         delete owners[tokenId];
         delete tokenURIs[tokenId];

@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-abstract contract ERC20 {
+abstract contract ERC20Interface {
     function totalSupply() public view virtual returns (uint256);
     function balanceOf(address tokenOwner) public view virtual returns (uint);
     function allowance(address tokenOwner, address spender) public view virtual returns (uint);

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./getWeb3";
+import * as IPFS from 'ipfs-core'
 
 import "./App.css";
 
@@ -17,15 +17,17 @@ class App extends Component {
       console.log(accounts);
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = SimpleStorageContract.networks[networkId];
-      const instance = new web3.eth.Contract(
-        SimpleStorageContract.abi,
-        deployedNetwork && deployedNetwork.address,
-      );
+      console.log(networkId);
+
+      // const deployedNetwork = SimpleStorageContract.networks[networkId];
+      // const instance = new web3.eth.Contract(
+      //   SimpleStorageContract.abi,
+      //   deployedNetwork && deployedNetwork.address,
+      // );
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance }, this.runExample);
+      this.setState({ web3, accounts}, this.runExample);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -36,16 +38,40 @@ class App extends Component {
   };
 
   runExample = async () => {
-    const { accounts, contract } = this.state;
+    const node = await IPFS.create()
+    //SHOULD BE A BUFFER AS AN INPUT FROM THE USER
+    const imageData = ""
 
-    // Stores a given value, 5 by default.
-    await contract.methods.set(5).send({ from: accounts[0] });
+    //A BUSINESS MODEL CAN BE CREATED TO ENCOURAGE PEOPLE TO MINT NFTS WHICH IS TO INSERT AN IMAGE WITH THE STOCK WHILE MINTING BY THE USER FOR
+    //HIGHER USER SATISFACTION AND TO MAKE IT A MORE UNIQUE EXPERIENCE
+    const imageUploadResult = await node.add(imageData)
+    const imageURI = imageUploadResult.path
+    //GET ID FROM TOKEN COUNTER
+    const id = 1
+    //INPUT FROM USER
+    const stockName = "TSLA";
+    //INPUT FROM USER
+    const stocksQuatity = 3;
 
-    // Get the value from the contract to prove it worked.
-    const response = await contract.methods.get().call();
+    let data = JSON.stringify({
+        name: "NeroNFT #" + id,
+        description: stockName + " - Stocks",
+        quantity: stocksQuatity,
+        image: imageURI
+    })
 
-    // Update state with the result.
-    this.setState({ storageValue: response });
+    const results = await node.add(data)
+    console.log(results.path);
+
+    // const stream = node.cat("QmPChd2hVbrJ6bfo3WBcTW4iZnpHm8TEzWkLHmLpXhF68A")
+    // let data = ''
+    //
+    // for await (const chunk of stream) {
+    //   // chunks of data are returned as a Buffer, convert it back to a string
+    //   data += chunk.toString()
+    // }
+    //
+    // console.log(data)
   };
 
   render() {
