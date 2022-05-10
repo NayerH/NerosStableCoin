@@ -1,0 +1,282 @@
+{
+  "contractName": "BankHandler",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "withdrawMoney",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "refundMoney",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"refundMoney\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdrawMoney\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/BankHandler.sol\":\"BankHandler\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/BankHandler.sol\":{\"keccak256\":\"0xb905680cb82696c0e1e142b56b41fd02d8bac00af218e5c37f75482ee8cd5409\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c5032c748c32d4c0fb165a54f5fcdc840ff2aa499a1570c41dcd28f354fe5da9\",\"dweb:/ipfs/QmcnTbi7PSMrxV8cjeVVada5ooLinGLcUJeUNxu4KFgiMt\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b5060818061001e6000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c8063ac446002146037578063ea31db1314603f575b600080fd5b603d6047565b005b60456049565b005b565b56fea2646970667358221220a7f6855fd784b305787849eae1732da8ae0e5d9acf9021a457d0e17daa3aa3b764736f6c634300080d0033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060325760003560e01c8063ac446002146037578063ea31db1314603f575b600080fd5b603d6047565b005b60456049565b005b565b56fea2646970667358221220a7f6855fd784b305787849eae1732da8ae0e5d9acf9021a457d0e17daa3aa3b764736f6c634300080d0033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "60:115:15:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "60:115:15:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;88:40;;;:::i;:::-;;134:38;;;:::i;:::-;;88:40;:::o;134:38::-;:::o",
+  "source": "//SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.13;\r\n\r\ncontract BankHandler {\r\n\r\n  function withdrawMoney() public {\r\n\r\n  }\r\n\r\n  function refundMoney() public {\r\n\r\n  }\r\n}\r\n",
+  "sourcePath": "D:\\S8\\Neros\\contracts\\BankHandler.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/BankHandler.sol",
+    "exportedSymbols": {
+      "BankHandler": [
+        2359
+      ]
+    },
+    "id": 2360,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2350,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".13"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:24:15"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "BankHandler",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 2359,
+        "linearizedBaseContracts": [
+          2359
+        ],
+        "name": "BankHandler",
+        "nameLocation": "69:11:15",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 2353,
+              "nodeType": "Block",
+              "src": "120:8:15",
+              "statements": []
+            },
+            "functionSelector": "ac446002",
+            "id": 2354,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "withdrawMoney",
+            "nameLocation": "97:13:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2351,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "110:2:15"
+            },
+            "returnParameters": {
+              "id": 2352,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "120:0:15"
+            },
+            "scope": 2359,
+            "src": "88:40:15",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 2357,
+              "nodeType": "Block",
+              "src": "164:8:15",
+              "statements": []
+            },
+            "functionSelector": "ea31db13",
+            "id": 2358,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "refundMoney",
+            "nameLocation": "143:11:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2355,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "154:2:15"
+            },
+            "returnParameters": {
+              "id": 2356,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "164:0:15"
+            },
+            "scope": 2359,
+            "src": "134:38:15",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2360,
+        "src": "60:115:15",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:145:15"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/BankHandler.sol",
+    "exportedSymbols": {
+      "BankHandler": [
+        2359
+      ]
+    },
+    "id": 2360,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2350,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".13"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:24:15"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "BankHandler",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 2359,
+        "linearizedBaseContracts": [
+          2359
+        ],
+        "name": "BankHandler",
+        "nameLocation": "69:11:15",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 2353,
+              "nodeType": "Block",
+              "src": "120:8:15",
+              "statements": []
+            },
+            "functionSelector": "ac446002",
+            "id": 2354,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "withdrawMoney",
+            "nameLocation": "97:13:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2351,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "110:2:15"
+            },
+            "returnParameters": {
+              "id": 2352,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "120:0:15"
+            },
+            "scope": 2359,
+            "src": "88:40:15",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 2357,
+              "nodeType": "Block",
+              "src": "164:8:15",
+              "statements": []
+            },
+            "functionSelector": "ea31db13",
+            "id": 2358,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "refundMoney",
+            "nameLocation": "143:11:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2355,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "154:2:15"
+            },
+            "returnParameters": {
+              "id": 2356,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "164:0:15"
+            },
+            "scope": 2359,
+            "src": "134:38:15",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2360,
+        "src": "60:115:15",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:145:15"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
+  },
+  "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x884dE7B97d17ef88A4ef75973F5348C99cF89faC",
+      "transactionHash": "0x0db06678afbcffd12b9bc4e37d41eec9f981265858eb688ea5660739193b4bcd"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x0379226FA0ECA76077bf54b8D80EDE6510142F70",
+      "transactionHash": "0xf94c8a1b6fb38021eacbbe1296aef5c4f02e6344dccb1efde01cdb3984b659e7"
+    }
+  },
+  "schemaVersion": "3.4.6",
+  "updatedAt": "2022-04-26T23:45:27.604Z",
+  "networkType": "ethereum",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

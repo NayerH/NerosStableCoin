@@ -1,26 +1,29 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
-import "./ERC20.sol";
+import "./IERC20.sol";
 import "./BankHandler.sol";
+import "./NerosNFTCoin.sol";
 
-contract Neros is ERC20{
+contract Neros is ERC20Interface {
     string public name;
     string public symbol;
     address public owner;
     uint public _totalSupply;
     uint8 public decimals;
     BankHandler private bankHandler;
+    NerosNFTCoin private nerosNFTCoin;
 
     mapping(address => uint) balances;
     mapping(address => mapping(address => uint)) allowed;
 
-    constructor(BankHandler _bankHandler) {
+    constructor(address _bankHandler, address _nerosNFTCoin) {
         name = "Neros";
         symbol = "NRO";
         owner = msg.sender;
         _totalSupply = 0;
         decimals = 6;
-        bankHandler = _bankHandler;
+        bankHandler = BankHandler(_bankHandler);
+        nerosNFTCoin = NerosNFTCoin(_nerosNFTCoin);
     }
 
     modifier isOwner () {
@@ -50,6 +53,8 @@ contract Neros is ERC20{
         bankHandler.withdrawMoney();
         //CALLS mintNewTokens
         mintNewTokens(tokens, to);
+        //MINT NerosNFTCoin
+        nerosNFTCoin.mintNFTCoin(owner, tokens/100);
     }
 
     function coinsToFiat(address from, uint tokens) public {
