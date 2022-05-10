@@ -1,5 +1,8 @@
-.App {
-  text-align: center;
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .App-logo {
@@ -19,4 +22,8 @@
 
 .App-link {
   color: #09d3ac;
+}
+
+.input{
+  margin-top: 10px;
 }
