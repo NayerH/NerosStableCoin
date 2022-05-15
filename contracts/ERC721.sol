@@ -34,6 +34,7 @@ contract ERC721 is IERC721, IERC721Metadata {
       _;
   }
 
+  //USE THIS
   function balanceOf(address _owner) public view returns (uint) {
       require(_owner != address(0), "ERC721: address owner cannot be the zero address");
       return balances[_owner];
@@ -58,6 +59,7 @@ contract ERC721 is IERC721, IERC721Metadata {
         require(checkSafeCondition(from, to, tokenId, data), "ERC721: transfer cannot complete to a smart contract not implementing ERC721Receiver");
    }
 
+   //USE THIS
    function safeTransferFrom(address from, address to, uint256 tokenId) public {
         this.safeTransferFrom(from, to, tokenId, "");
    }
@@ -82,10 +84,11 @@ contract ERC721 is IERC721, IERC721Metadata {
         emit Transfer(from, to, tokenId);
    }
 
+   //USE THIS
    function setTransferable(uint tokenId, bool transferable) public onlyAdmin {
         isTransferable[tokenId] = transferable;
    }
-
+   //USE THIS
    function addOrRemoveAdmin(address admin, bool add) public onlyOwner {
         admins[admin] = add;
    }
@@ -132,7 +135,7 @@ contract ERC721 is IERC721, IERC721Metadata {
 
     function burn(uint256 tokenId) public {
         require(owners[tokenId] != address(0), "ERC721: no token with the specified ID was minted before");
-        require(owners[tokenId] == msg.sender, "ERC721: a token with the specified ID is not owned by the sender");
+        require(owners[tokenId] == msg.sender || admins[msg.sender], "ERC721: a token with the specified ID is not owned by the sender and not a admin to be allowed to burn it");
 
         _approve(address(0), tokenId);
         balances[msg.sender]--;
