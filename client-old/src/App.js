@@ -93,7 +93,6 @@ class App extends Component {
     return (
       <Router>
       <div  className="App">
-        <Navbar2 />
         <GlobalStyles />
         <Switch>
           <Route path="/" exact><Home /></Route> 
