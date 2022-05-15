@@ -4,7 +4,7 @@ import axios from "axios";
 import LatestBlocks from "./components/Latest-Blocks";
 import LatestTxs from "./components/Latest-Txs";
 import { Card, Grid, Icon } from "semantic-ui-react";
-
+import NavGen from './components/NavGen';
 const apiKey = '319BG7QADE163YKDR3ZSQ6DRIFWUE6X2FD';
 const endpoint = `https://api-rinkeby.etherscan.io/api`;
 const address='0x5b98F45189B3FDc5a8a35566Da63AEa7653bCFC2';
@@ -107,7 +107,8 @@ class transactions extends Component {
 
   render() {
     return (
-      <div>
+      <div >
+        <NavGen />
         <Grid divided="vertically">
           <Grid.Row columns={2}>
             <Grid.Column>{this.getLatestBlocks()}</Grid.Column>

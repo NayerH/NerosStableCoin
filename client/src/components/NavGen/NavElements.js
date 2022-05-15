@@ -73,7 +73,7 @@ margin:180px;
 export const NavItem=styled.li`
 height:80px;`
 
-export const NavLinks=styled(LinkS)`
+export const NavLinks=styled(LinkR)`
 color:#fff;
 display:flex;
 align-items:center;

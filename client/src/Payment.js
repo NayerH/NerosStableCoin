@@ -8,7 +8,7 @@ import Neros from './contracts/Neros.json'
 import getWeb3 from "./getWeb3";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { Button2 } from "./components/Button2";
-
+import NavGen from './components/NavGen';
 
 
 
@@ -92,10 +92,12 @@ class Payment extends Component{
        event.preventDefault();
        try{
        this.setState({loading:true});
-       const { accounts, contract } = this.state;
+       const {  contract } = this.state;
        const web3 = await getWeb3();
-       //const accounts = await web3.eth.getAccounts();
-       await contract.methods.fiatToCoins(accounts[0],this.state.amount).send({
+       const accounts = await web3.eth.getAccounts();
+       console.log(accounts[0]);
+       const newamt=this.state.amount*1000000;
+       await contract.methods.fiatToCoins(accounts[0],newamt).send({
            from:accounts[0]
        }
        )
@@ -130,7 +132,7 @@ class Payment extends Component{
             )
         }
         return(
-            
+            <div><NavGen />
         <div style={{
           display: 'flex',
           margin:100,
@@ -210,7 +212,7 @@ class Payment extends Component{
       </Form>
       <Step.Group items={steps} />
       </Container>
-        </div>
+        </div></div>
         )
     }
 }

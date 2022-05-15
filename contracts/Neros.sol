@@ -64,7 +64,7 @@ contract Neros is ERC20Interface {
         burnTokens(tokens, from);
     }
 
-    function _transferFrom(address from, address payable to, uint tokens) internal {
+    function _transferFrom(address from, address to, uint tokens) internal {
         require(balances[msg.sender] >= tokens, "Neros: Your balance is too low to transfer this amouut of Neros.");
         require(to != address(0), "Neros: To address cannot be a zero address");
         require(from != address(0), "Neros: From address cannot be a zero address");
@@ -91,7 +91,7 @@ contract Neros is ERC20Interface {
     function allowance(address tokenOwner, address spender) public view override returns (uint){
         return allowed[tokenOwner][spender];
     }
-    function transfer(address payable to, uint tokens) public override returns (bool){
+    function transfer(address  to, uint tokens) public override returns (bool){
         _transferFrom(msg.sender, to, tokens);
         return true;
     }
@@ -99,7 +99,7 @@ contract Neros is ERC20Interface {
         changeAllowance(msg.sender, spender, tokens);
         return true;
     }
-    function transferFrom(address from, address payable to, uint tokens) public override returns (bool){
+    function transferFrom(address from, address  to, uint tokens) public override returns (bool){
         require(allowance(from, msg.sender) >= tokens, "Neros: Insufficient balance for approval of this amount of Neros.");
         changeAllowance(from, msg.sender, allowance(from, msg.sender) - tokens);
         _transferFrom(from, to, tokens);

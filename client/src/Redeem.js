@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 import Neros from './contracts/Neros.json'
 import getWeb3 from "./getWeb3";
 import { Button2 } from "./components/Button2";
+import NavGen from './components/NavGen';
 
 const options = [
     { key: 'm', text: 'Male', value: 'male' },
@@ -86,7 +87,8 @@ class Redeem extends Component{
        const { accounts, contract } = this.state;
        const web3 = await getWeb3();
        //const accounts = await web3.eth.getAccounts();
-       await contract.methods.coinsToFiat(accounts[0],this.state.amount).send({
+       const newamt=this.state.amount*1000000;
+       await contract.methods.coinsToFiat(accounts[0],newamt).send({
            from:accounts[0]
        }
        )
@@ -113,7 +115,7 @@ class Redeem extends Component{
             )
         }
         return(
-            
+            <div><NavGen />
         <div style={{
           display: 'flex',
           margin:100,
@@ -193,7 +195,7 @@ class Redeem extends Component{
       </Form>
       <Step.Group items={steps} />
       </Container>
-        </div>
+        </div></div>
         )
     }
 }

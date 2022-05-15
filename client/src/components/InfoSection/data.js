@@ -75,8 +75,8 @@ export const homeObjFive={
     lightBg:false,
     lightText:true,
     lightTextDesc:true,
-    topLine:'NFTs',
-    headline:'Redeem your NROs with NFTs now and vise versa',
+    topLine:'NFTs & Stocks',
+    headline:'Wolf of wall street? exhange stocks with NFTs now!',
     description:'Unlike any other stablecoin, with NROs you can now buy, exchange or even redeem NFTs',
     buttonLabel:'buy NFTs',
     imgStart:false,
@@ -85,7 +85,7 @@ export const homeObjFive={
     dark:true,
     primary:true,
     darkText:false,
-    to:'nft'
+    to:'Nft'
 };
 
 export const homeObjSix={
@@ -93,9 +93,9 @@ export const homeObjSix={
     lightBg:true,
     lightText:false,
     lightTextDesc:false,
-    topLine:'Stocks',
-    headline:'Wolf of wall street? exhange stocks with NROs now!',
-    description:' stocks could be another way to make a lot of money so press below now and become a millionaire ',
+    topLine:'Transaction history',
+    headline:'Keep an eye on all the transaction history of the Neros stable coin',
+    description:' With all the history infront of your eyes, there is no fraud at all not even a chance of it ',
     buttonLabel:'buy Stocks',
     imgStart:false,
     img: require('../../images/21.svg'),
@@ -103,5 +103,5 @@ export const homeObjSix={
     dark:false,
     primary:false,
     darkText:true,
-    to:'stocks'
+    to:'transactions'
 };

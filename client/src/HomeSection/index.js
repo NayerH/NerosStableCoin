@@ -1,10 +1,6 @@
 import React, {useState} from 'react';
 import Video from '../videos/video.mp4';
-import { Home2Container,HomeBg,VideoBg,HomeContent, HomeH1,HomeP,HomeBtnWrapper,ArrowForward,ArrowRight  } from './Home2';
-import { Button2 } from "../components/Button2";
-import { Button3 } from "../components/Button3";
-import {Link} from "react-scroll";
-
+import { Home2Container,HomeBg,VideoBg,HomeContent, HomeH1,HomeP  } from './Home2';
 
 const Home22=()=>{
     const[hover,setHover]=useState(false)

@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import {FaBars} from 'react-icons/fa'
-import { Nav, NavbarContainer,NavLogo, MobileIcon, NavMenu, NavItem, NavLinks, NavBtn, NavBtnLink } from './NavbarElements';
+import { Nav, NavbarContainer,NavLogo, MobileIcon, NavMenu, NavItem, NavLinks, NavBtn, NavBtnLink } from './NavElements';
 import { animateScroll as scroll } from 'react-scroll';
 
 
@@ -8,7 +8,7 @@ const toggleHome=()=>{
     scroll.scrollToTop();
 };
 
-const Navbar2=({toggle})=>{
+const NavGen=({toggle})=>{
     const [scrollNav,setScrollNav]=useState(false);
 
     const changeNav=()=>{
@@ -47,7 +47,7 @@ const Navbar2=({toggle})=>{
                     </NavItem>
                     <NavItem>
                         <NavLinks 
-                        to= 'Purchase'
+                        to= '/Payment'
                         smooth={true}
                         duration={500}
                         spy={true}
@@ -57,7 +57,7 @@ const Navbar2=({toggle})=>{
                     </NavItem>
                     <NavItem>
                         <NavLinks 
-                        to= 'Redeem'
+                        to= '/Redeem'
                         smooth={true}
                         duration={500}
                         spy={true}
@@ -67,7 +67,7 @@ const Navbar2=({toggle})=>{
                     </NavItem>
                     <NavItem>
                         <NavLinks 
-                        to= 'Transfer'
+                        to= '/Transfer'
                         smooth={true}
                         duration={500}
                         spy={true}
@@ -77,7 +77,7 @@ const Navbar2=({toggle})=>{
                     </NavItem>
                     <NavItem>
                         <NavLinks 
-                        to= 'nft'
+                        to= '/Nft'
                         smooth={true}
                         duration={500}
                         spy={true}
@@ -87,7 +87,7 @@ const Navbar2=({toggle})=>{
                     </NavItem>
                     <NavItem>
                         <NavLinks 
-                        to= 'stock'
+                        to= '/transactions'
                         smooth={true}
                         duration={500}
                         spy={true}
@@ -112,4 +112,4 @@ const Navbar2=({toggle})=>{
     );
 };
 
-export default Navbar2;
+export default NavGen;
