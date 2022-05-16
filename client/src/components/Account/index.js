@@ -2,7 +2,8 @@ import React, { Component, useEffect, useState } from 'react';
 import { Container, FormWrap,Icon,FormContent,Form,FormH1 } from './AccountElement';
 import Neros from '../../contracts/Neros.json'
 import getWeb3 from "../../getWeb3";
-
+import NerosNFT from '../../contracts/NerosNFT.json'
+import NerosNFTCoin from '../../contracts/NerosNFTCoin.json'
 class Account extends Component{
     state = { 
         storageValue: 0, 
@@ -14,7 +15,9 @@ class Account extends Component{
         loading:false,
         errorMessage:'',
         success:false,
-        balanceCurr:0
+        balanceCurr:0,
+        balanceCurr2:0,
+        admin2:false
          };
 
          componentDidMount = async () => {
@@ -28,7 +31,7 @@ class Account extends Component{
               // Get the contract instance.
               const networkId = await web3.eth.net.getId();
               const deployedNetwork = Neros.networks[networkId];
-              console.log(deployedNetwork && deployedNetwork.address)
+              
               const instance = new web3.eth.Contract(
                 Neros.abi,
                 deployedNetwork && deployedNetwork.address,
@@ -36,12 +39,27 @@ class Account extends Component{
               console.log(instance)
               const balance=await instance.methods.balanceOf(accounts[0]).call();
               console.log(balance)
-              let total= await instance.methods.totalSupply().call();
-              console.log(total)
+
+              const deployedNetwork2 = NerosNFT.networks[networkId];
               
+              const instance2 = new web3.eth.Contract(
+                NerosNFT.abi,
+                deployedNetwork2 && deployedNetwork2.address,
+              );
+              const balance2=await instance2.methods.balanceOf(accounts[0]).call();
+              
+              const deployedNetwork3 = NerosNFTCoin.networks[networkId];
+              
+              const instance3 = new web3.eth.Contract(
+                NerosNFTCoin.abi,
+                deployedNetwork3 && deployedNetwork3.address,
+              );
+
+              let isAdmin=await instance3.methods.admins(accounts[0]).call();
+              console.log(isAdmin+"hiiiiiiiii")
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
-              this.setState({ web3, accounts, contract: instance,balanceCurr:balance });
+              this.setState({ web3, accounts, contract: instance,balanceCurr:balance,balanceCurr2:balance2,admin2:isAdmin });
             } catch (error) {
               // Catch any errors for any of the above operations.
               alert(
@@ -72,13 +90,16 @@ class Account extends Component{
       <span class="date">Joined in 2013</span>
     </div>
     <div class="description">
-      Balance: {this.state.balanceCurr} NRO
+      NRO Balance: {this.state.balanceCurr/1000000} 
+    </div>
+    <div class="description">
+      NROT Balance: {this.state.balanceCurr2} 
     </div>
   </div>
   <div class="extra content">
     <a>
       <i class="user icon"></i>
-      22 Friends
+      is Admin: {this.state.admin2}
     </a>
   </div>
 </div>

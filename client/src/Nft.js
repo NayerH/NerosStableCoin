@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server';
 import {Link} from "react-router-dom";
 import Neros from './contracts/Neros.json'
 import NerosNFT from './contracts/NerosNFT.json'
-import ERC721 from './contracts/Neros.json'
+import NerosNFTCoin from './contracts/NerosNFTCoin.json'
 import getWeb3 from "./getWeb3";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { Button2 } from "./components/Button2";
@@ -44,10 +44,10 @@ class Nft extends Component{
               console.log(accounts);
               // Get the contract instance.
               const networkId = await web3.eth.net.getId();
-              const deployedNetwork = ERC721.networks[networkId];
+              const deployedNetwork = NerosNFTCoin.networks[networkId];
               console.log(deployedNetwork && deployedNetwork.address)
               const instance = new web3.eth.Contract(
-                ERC721.abi,
+                NerosNFTCoin.abi,
                 deployedNetwork && deployedNetwork.address,
               );
               console.log(instance)

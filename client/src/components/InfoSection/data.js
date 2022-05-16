@@ -13,7 +13,8 @@ export const homeObjOne={
     dark:true,
     primary:true,
     darkText:false,
-    to:'About'
+    to:'About',
+    present:false
 };
 
 export const homeObjTwo={
@@ -22,16 +23,19 @@ export const homeObjTwo={
     lightText:false,
     lightTextDesc:false,
     topLine:'BUY',
-    headline:'Purchase NROs now',
-    description:'Start your crypto journey by buying NROs now',
-    buttonLabel:'Buy now',
+    headline:'Purchase NROs or NROCs now',
+    description:'Start your crypto journey by buying NROs now or mint your NFTs with NROCS now',
+    buttonLabel:'Buy NROs',
     imgStart:true,
     img: require('../../images/cart.svg'),
     alt:'buy',
     dark:true,
     primary:false,
     darkText:true,
-    to:'Payment'
+    to:'Payment',
+    to2:'PaymentNFT',
+    to3:'About',
+    present:true
 };
 
 export const homeObjThree={
@@ -49,7 +53,8 @@ export const homeObjThree={
     dark:true,
     primary:true,
     darkText:false,
-    to:'Redeem'
+    to:'Redeem',
+    present:false
 };
 
 export const homeObjFour={
@@ -67,7 +72,8 @@ export const homeObjFour={
     dark:false,
     primary:false,
     darkText:true,
-    to:'Transfer'
+    to:'Transfer',
+    present:false
 };
 
 export const homeObjFive={
@@ -78,14 +84,15 @@ export const homeObjFive={
     topLine:'NFTs & Stocks',
     headline:'Wolf of wall street? exhange stocks with NFTs now!',
     description:'Unlike any other stablecoin, with NROs you can now buy, exchange or even redeem NFTs',
-    buttonLabel:'buy NFTs',
+    buttonLabel:'mint NFTs',
     imgStart:false,
     img: require('../../images/art.svg'),
     alt:'art',
     dark:true,
     primary:true,
     darkText:false,
-    to:'Nft'
+    to:'Nft',
+    present:false
 };
 
 export const homeObjSix={
@@ -96,12 +103,13 @@ export const homeObjSix={
     topLine:'Transaction history',
     headline:'Keep an eye on all the transaction history of the Neros stable coin',
     description:' With all the history infront of your eyes, there is no fraud at all not even a chance of it ',
-    buttonLabel:'buy Stocks',
+    buttonLabel:'view history',
     imgStart:false,
     img: require('../../images/21.svg'),
     alt:'stocks',
     dark:false,
     primary:false,
     darkText:true,
-    to:'transactions'
+    to:'transactions',
+    present:false
 };
