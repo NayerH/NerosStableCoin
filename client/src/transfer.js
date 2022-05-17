@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import {Message,Step,Select,Checkbox,Radio, Container, Header, Button,Card,Icon,Grid,Form ,Image} from 'semantic-ui-react';
-import { NextResponse } from 'next/server';
+// import { NextResponse } from 'next/server';
 import {Link} from "react-router-dom";
 import Neros from './contracts/Neros.json'
 import getWeb3 from "./getWeb3";
@@ -14,12 +14,12 @@ import NavGen from './components/NavGen';
 
 class transfer extends Component{
 
-    
 
-    state = { 
-        storageValue: 0, 
-        web3: null, 
-        accounts: null, 
+
+    state = {
+        storageValue: 0,
+        web3: null,
+        accounts: null,
         contract: null,
         amount:'',
         addressTo:'',
@@ -31,7 +31,7 @@ class transfer extends Component{
 
          componentDidMount = async () => {
             try {
-        
+
              this.handleChange=this.handleChange.bind(this);
              this.onSubmit=this.onSubmit.bind(this);
               // Get network provider and web3 instance.
@@ -52,7 +52,7 @@ class transfer extends Component{
               console.log(balance)
               let total= await instance.methods.totalSupply().call();
               console.log(total)
-              
+
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
               this.setState({ web3, accounts, contract: instance,balanceCurr:balance });
@@ -75,13 +75,13 @@ class transfer extends Component{
             console.log(x)
             //const accounts = await web3.eth.getAccounts();
             console.log(this.state.addressTo);
-            const newamt=this.state.amount*1000000;
+            const newamt=this.state.amount*100;
             if(this.state.amount<=this.state.balanceCurr){
             await contract.methods.transfer(this.state.addressTo,newamt).send({
                 from:accounts[0]
             }
             )
-          
+
             this.setState({loading:false});
             this.setState({success:true})}
           }
@@ -107,7 +107,7 @@ class transfer extends Component{
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-              
+
             <Container >
             <Grid>
     <Grid.Column textAlign="center">
@@ -124,38 +124,38 @@ class transfer extends Component{
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-    NRO balance = {this.state.balanceCurr/1000000}
+    NRO balance = {this.state.balanceCurr/100}
     </div>
     </Header>
-    
+
     </Grid.Column>
     </Grid>
     <Form onSubmit={this.onSubmit} error={this.state.errorMessage} >
-    
+
         <Form.Group widths='equal'>
-          <Form.Input 
+          <Form.Input
           //error={{ content: 'Please enter your first name', pointing: 'below' }}
-          fluid label='First name' 
+          fluid label='First name'
           placeholder='First name'
           id='form-input-first-name'
            />
           <Form.Input  fluid label='Last name' placeholder='Last name' />
-          
+
         </Form.Group>
         <Form.Group widths='equal'>
         <Form.Input required
-        fluid label='Please enter the amount' 
+        fluid label='Please enter the amount'
         placeholder='amount in $'
         value={this.state.amount}
         onChange={this.handleChange.bind(this)} />
         <Form.Input required
-        fluid label='Please enter the address you are going to transfer to' 
+        fluid label='Please enter the address you are going to transfer to'
         placeholder='address of the receipient'
         value={this.state.addressTo}
         onChange={this.handleChange2.bind(this)} />
         </Form.Group>
-        
-          
+
+
         <Form.Checkbox required label='I agree to the Terms and Conditions' />
         <Message error header="Oops!" content={this.state.errorMessage} />
         <Form.Button loading={this.state.loading} >Transfer</Form.Button>

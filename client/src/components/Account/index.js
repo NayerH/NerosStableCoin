@@ -4,10 +4,10 @@ import Neros from '../../contracts/Neros.json'
 import getWeb3 from "../../getWeb3";
 
 class Account extends Component{
-    state = { 
-        storageValue: 0, 
-        web3: null, 
-        accounts: null, 
+    state = {
+        storageValue: 0,
+        web3: null,
+        accounts: null,
         contract: null,
         amount:'',
         addressTo:'',
@@ -19,7 +19,7 @@ class Account extends Component{
 
          componentDidMount = async () => {
             try {
-        
+
               // Get network provider and web3 instance.
               const web3 = await getWeb3();
               // Use web3 to get the user's accounts.
@@ -34,11 +34,13 @@ class Account extends Component{
                 deployedNetwork && deployedNetwork.address,
               );
               console.log(instance)
-              const balance=await instance.methods.balanceOf(accounts[0]).call();
+              let balance=await instance.methods.balanceOf(accounts[0]).call();
+              balance=balance/100;
               console.log(balance)
               let total= await instance.methods.totalSupply().call();
+              total= total/100;
               console.log(total)
-              
+
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
               this.setState({ web3, accounts, contract: instance,balanceCurr:balance });
