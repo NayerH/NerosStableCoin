@@ -4,6 +4,14 @@ import Neros from '../../contracts/Neros.json'
 import getWeb3 from "../../getWeb3";
 import NerosNFT from '../../contracts/NerosNFT.json'
 import NerosNFTCoin from '../../contracts/NerosNFTCoin.json'
+import {SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon} from './AccountElement'
+import prof from '../../images/prof.svg'
+import * as IPFS from 'ipfs-core'
+import { CID } from 'multiformats/cid'
+import { base58btc } from 'multiformats/bases/base58'
+import { base64 } from "multiformats/bases/base64"
+
+
 class Account extends Component{
     state = { 
         storageValue: 0, 
@@ -17,7 +25,8 @@ class Account extends Component{
         success:false,
         balanceCurr:0,
         balanceCurr2:0,
-        admin2:false
+        admin2:'',
+        address:''
          };
 
          componentDidMount = async () => {
@@ -59,7 +68,33 @@ class Account extends Component{
               console.log(isAdmin+"hiiiiiiiii")
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
-              this.setState({ web3, accounts, contract: instance,balanceCurr:balance,balanceCurr2:balance2,admin2:isAdmin });
+              this.setState({ web3, accounts, contract: instance,balanceCurr:balance,balanceCurr2:balance2 });
+              this.setState({admin2:isAdmin,address:accounts});
+              console.log(this.state.admin2)
+
+              const node = await IPFS.create()
+              let token=await instance2.methods.tokenURI("1").call();
+              console.log(token)
+              const stream = node.cat('QmYtsuhi18YzMpu3tMa5xVoA3UYTw5qFLPaEdfx85joLSv')
+              let data = ''
+              for await (const chunk of stream) {
+              // chunks of data are returned as a Buffer, convert it back to a string
+              data += chunk.toString()
+               }
+
+              console.log(data)
+              
+              // const stream = node.cat(token)
+              // let data = ''
+              // console.log(stream)
+              // CID.parse(stream,base64.decoder)
+              // for await (const chunk of stream) {
+              //   // chunks of data are returned as a Buffer, convert it back to a string
+                
+              //   data += chunk.toString()
+              //  }
+
+              // console.log(data)
             } catch (error) {
               // Catch any errors for any of the above operations.
               alert(
@@ -69,47 +104,58 @@ class Account extends Component{
             }
           };
     render(){
-   return(
-       <>
-       <Container>
-           <FormWrap>
-               <FormContent>
-               <Icon to="/">Neros</Icon>
-               <FormH1>Account Summary</FormH1>
-               <div style={{
-                color:'#01BF71',
-                display: 'flex',
-                margin:50,
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-               <div class="ui centered card">
-  <div class="content">
-    <a class="header">Youssef</a>
-    <div class="meta">
-      <span class="date">Joined in 2013</span>
-    </div>
-    <div class="description">
-      NRO Balance: {this.state.balanceCurr/1000000} 
-    </div>
-    <div class="description">
-      NROT Balance: {this.state.balanceCurr2} 
-    </div>
-  </div>
-  <div class="extra content">
-    <a>
-      <i class="user icon"></i>
-      is Admin: {this.state.admin2}
-    </a>
-  </div>
-</div>
-</div>
-</FormContent>
-           </FormWrap>
-       </Container>
-       </>
-   )
-    }
+      if(!this.state.admin2)
+      {
+      return(
+        <SerivicesContainer>
+          <SerivicesH1>Account Summary</SerivicesH1>
+          <SerivicesWrapper>
+            <SerivicesCard>
+              <ServicesIcon src={prof} />
+              <SerivicesH2>Address:{this.state.address}</SerivicesH2>
+              <SerivicesP>
+                NRO balance: {this.state.balanceCurr/1000000}
+              </SerivicesP>
+              <SerivicesP>
+                NROT balance: {this.state.balanceCurr2}
+              </SerivicesP>
+              <SerivicesP>
+                isAdmin:{this.state.admin2}
+              </SerivicesP>
+            </SerivicesCard>
+          </SerivicesWrapper>
+
+          
+
+        </SerivicesContainer>
+      )
+  }
+  else
+  {
+    return(
+      <SerivicesContainer>
+          <SerivicesH1>Account Summary</SerivicesH1>
+          <SerivicesWrapper>
+            <SerivicesCard>
+              <ServicesIcon src={prof} />
+              <SerivicesH2>Youssef</SerivicesH2>
+              <SerivicesP>
+                NRO balance: {this.state.balanceCurr/1000000}
+              </SerivicesP>
+              <SerivicesP>
+                NROT balance: {this.state.balanceCurr2}
+              </SerivicesP>
+              <SerivicesP>
+                isAdmin:{this.state.admin2}
+              </SerivicesP>
+            </SerivicesCard>
+          </SerivicesWrapper>
+
+        </SerivicesContainer>
+
+    )
+  }
+}
 }
 
 export default Account;

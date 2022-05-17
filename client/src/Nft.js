@@ -29,7 +29,8 @@ class Nft extends Component{
         errorMessage:'',
         success:false,
         balanceCurr:0,
-        image:''
+        image:'',
+        id:''
          };
 
          componentDidMount = async () => {
@@ -53,12 +54,22 @@ class Nft extends Component{
               console.log(instance)
               const balance=await instance.methods.balanceOf(accounts[0]).call();
               console.log(balance)
+
+              const deployedNetwork2 = NerosNFT.networks[networkId];
+              console.log(deployedNetwork && deployedNetwork.address)
+              const instance2 = new web3.eth.Contract(
+                NerosNFT.abi,
+                deployedNetwork2 && deployedNetwork2.address,
+              );
+
+              const token=await instance2.methods.tokenCounter().call();
+              console.log(token)
             //   let total= await instance.methods.totalSupply().call();
             //   console.log(total)
               
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
-              this.setState({ web3, accounts, contract: instance,balanceCurr:balance });
+              this.setState({ web3, accounts, contract: instance,balanceCurr:balance,id:token });
             } catch (error) {
               // Catch any errors for any of the above operations.
               alert(
@@ -81,7 +92,7 @@ class Nft extends Component{
     const imageUploadResult = await node.add(imageData)
     const imageURI = imageUploadResult.path
     //GET ID FROM TOKEN COUNTER
-    const id = 1
+    const id = this.state.id
     //INPUT FROM USER
     const stockName = this.state.name;
     //INPUT FROM USER
