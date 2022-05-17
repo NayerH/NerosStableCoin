@@ -7,6 +7,7 @@ import NavGen from './components/NavGen';
 import GlobalStyles from "./components/styles/Global";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Payment from "./Payment";
+import PaymentNFT from "./PaymentNFT";
 import Home from "./Home";
 import Redeem  from "./Redeem";
 import Account from "./Account";
@@ -96,6 +97,7 @@ class App extends Component {
           <Route path="/" exact><Home /></Route> 
           <Route path="/Home" exact><Home /></Route> 
           <Route path="/Payment" component={Payment}/>
+          <Route path="/PaymentNFT" component={PaymentNFT}/>
           <Route path="/Redeem" component={Redeem}/>
           <Route path="/Account" component={Account}/>
           <Route path="/transactions" component={transactions}/>

@@ -73,19 +73,38 @@ class About  extends Component{
                     </TextWrapper>
                    <TextWrapper>
                    <TopLine2>
-                    Total supply: {this.state.balanceCurr} NRO
+                    Total supply: {this.state.balanceCurr/1000000} NRO
                     </TopLine2>
                     <TopLine2>
                       ----------------
                     </TopLine2>
                     <TopLine2>
-                    Bank Balance: {this.state.balanceCurr} USD
+                    Bank Balance: {this.state.balanceCurr/1000000} USD
                     </TopLine2>
                     </TextWrapper>
                     </Column1>
                     <Column2>
                     <ImgWrap>
                     <Img src={require('../../images/31.svg')} alt={'car'} />
+                    </ImgWrap>
+                    </Column2>
+                </InfoRow>
+            </InfoWrapper>
+            <InfoWrapper>
+                <InfoRow imgStart={true}>
+                    <Column1>
+                    <TextWrapper>
+                        <TopLine>NROC coin</TopLine>
+                        <Heading lightText={true}>What is NROC coin?
+                        </Heading>
+                        <Subtitle darkText={false}>NROC is simply the currency with which you can buy and mint NFTs. With every 100 Neros minted, 1 NROC is automatically minted the our company. You have the ability to buy NROCs either through an exchange or through our website. The process is very simple just like purchasing normal NROs however it's paid in ETH not in USD.</Subtitle>
+                    </TextWrapper>
+                   <TextWrapper>
+                    </TextWrapper>
+                    </Column1>
+                    <Column2>
+                    <ImgWrap>
+                    <Img src={require('../../images/4.svg')} alt={'car'} />
                     </ImgWrap>
                     </Column2>
                 </InfoRow>
