@@ -15,9 +15,11 @@ contract ERC721 is IERC721, IERC721Metadata {
   mapping(uint256 => address) private tokenApprovals;
   mapping(address => mapping(address => bool)) private operatorApprovals;
   mapping(uint256 => string) private tokenURIs;
+  mapping(address => uint[]) internal ownedTokens;
 
   mapping(uint256 => bool) public isTransferable;
   mapping(address => bool) public admins;
+  mapping(uint => bool) public isForSale;
 
   constructor(string memory _name, string memory _symbol){
       name = _name;
@@ -79,15 +81,23 @@ contract ERC721 is IERC721, IERC721Metadata {
         _approve(address(0), tokenId);
         balances[from]--;
         balances[to]++;
+
+        //Remove from old array and input into new array
+        int index = getIndex(ownedTokens[from], tokenId);
+        if(index >= 0){
+          ownedTokens[from][uint(index)] = ownedTokens[from][ownedTokens[from].length - 1];
+          ownedTokens[from].pop();
+        }
+        ownedTokens[to].push(tokenId);
+
         owners[tokenId] = to;
+
+        //reset forSale
+        isForSale[tokenId] = false;
 
         emit Transfer(from, to, tokenId);
    }
 
-   //USE THIS
-   function setTransferable(uint tokenId, bool transferable) public onlyAdmin {
-        isTransferable[tokenId] = transferable;
-   }
    //USE THIS
    function addOrRemoveAdmin(address admin, bool add) public onlyOwner {
         admins[admin] = add;
@@ -125,6 +135,7 @@ contract ERC721 is IERC721, IERC721Metadata {
 
         balances[to]++;
         owners[tokenId] = to;
+        ownedTokens[to].push(tokenId);
 
         emit Transfer(address(0), to, tokenId);
         require(
@@ -134,17 +145,24 @@ contract ERC721 is IERC721, IERC721Metadata {
     }
 
     function burn(uint256 tokenId) public {
-        require(owners[tokenId] != address(0), "ERC721: no token with the specified ID was minted before");
-        require(owners[tokenId] == msg.sender || admins[msg.sender], "ERC721: a token with the specified ID is not owned by the sender and not a admin to be allowed to burn it");
+        address _owner = owners[tokenId];
+        require(_owner != address(0), "ERC721: no token with the specified ID was minted before");
+        require((_owner == msg.sender && isTransferable[tokenId]) || admins[msg.sender], "ERC721: a token with the specified ID is not owned by the sender, or is not transferable yet, or the caller may not be an admin to be allowed to burn it");
+
 
         _approve(address(0), tokenId);
-        balances[msg.sender]--;
+        balances[_owner]--;
         isTransferable[tokenId] = false;
 
+        int index = getIndex(ownedTokens[_owner], tokenId);
+        if(index >= 0){
+          ownedTokens[_owner][uint(index)] = ownedTokens[_owner][ownedTokens[_owner].length - 1];
+          ownedTokens[_owner].pop();
+        }
         delete owners[tokenId];
         delete tokenURIs[tokenId];
 
-        emit Transfer(msg.sender, address(0), tokenId);
+        emit Transfer(_owner, address(0), tokenId);
     }
 
     //METADATA
@@ -190,5 +208,14 @@ contract ERC721 is IERC721, IERC721Metadata {
 
     function supportsInterface(bytes4 interfaceId) external pure returns (bool) {
         return interfaceId == type(IERC721).interfaceId;
+    }
+
+    function getIndex(uint[] memory array, uint tokenId) internal pure returns (int)  {
+          for (uint i = 0; i<=array.length-1; i++) {
+            if(array[i] == tokenId){
+              return int(i);
+            }
+          }
+          return -1;
     }
 }

@@ -16,8 +16,10 @@ module.exports = async function(deployer) {
   await deployer.deploy(Neros, bankHandlerInstance.address, nerosNFTCoinInstance.address);
   let nerosInstance = await Neros.deployed();
 
-  await deployer.deploy(NerosNFT, nerosNFTCoinInstance.address);
+  await deployer.deploy(NerosNFT, nerosNFTCoinInstance.address, nerosInstance.address);
   let nerosNFTInstance = await NerosNFT.deployed();
+
+  nerosInstance.setNerosNFT(nerosNFTInstance.address);
 
   //SET ADMINS IN NerosNFTCoin Contract
   nerosNFTCoinInstance.setAdmin(nerosInstance.address);

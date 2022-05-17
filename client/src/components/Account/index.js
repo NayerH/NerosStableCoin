@@ -13,10 +13,10 @@ import { base64 } from "multiformats/bases/base64"
 
 
 class Account extends Component{
-    state = { 
-        storageValue: 0, 
-        web3: null, 
-        accounts: null, 
+    state = {
+        storageValue: 0,
+        web3: null,
+        accounts: null,
         contract: null,
         amount:'',
         addressTo:'',
@@ -31,7 +31,7 @@ class Account extends Component{
 
          componentDidMount = async () => {
             try {
-        
+
               // Get network provider and web3 instance.
               const web3 = await getWeb3();
               // Use web3 to get the user's accounts.
@@ -40,25 +40,26 @@ class Account extends Component{
               // Get the contract instance.
               const networkId = await web3.eth.net.getId();
               const deployedNetwork = Neros.networks[networkId];
-              
+
               const instance = new web3.eth.Contract(
                 Neros.abi,
                 deployedNetwork && deployedNetwork.address,
               );
               console.log(instance)
-              const balance=await instance.methods.balanceOf(accounts[0]).call();
+              let balance=await instance.methods.balanceOf(accounts[0]).call();
+              balance=balance/100;
               console.log(balance)
 
               const deployedNetwork2 = NerosNFT.networks[networkId];
-              
+
               const instance2 = new web3.eth.Contract(
                 NerosNFT.abi,
                 deployedNetwork2 && deployedNetwork2.address,
               );
               const balance2=await instance2.methods.balanceOf(accounts[0]).call();
-              
+
               const deployedNetwork3 = NerosNFTCoin.networks[networkId];
-              
+
               const instance3 = new web3.eth.Contract(
                 NerosNFTCoin.abi,
                 deployedNetwork3 && deployedNetwork3.address,
@@ -114,7 +115,7 @@ class Account extends Component{
               <ServicesIcon src={prof} />
               <SerivicesH2>Address:{this.state.address}</SerivicesH2>
               <SerivicesP>
-                NRO balance: {this.state.balanceCurr/1000000}
+                NRO balance: {this.state.balanceCurr/100}
               </SerivicesP>
               <SerivicesP>
                 NROT balance: {this.state.balanceCurr2}
@@ -140,7 +141,7 @@ class Account extends Component{
               <ServicesIcon src={prof} />
               <SerivicesH2>Youssef</SerivicesH2>
               <SerivicesP>
-                NRO balance: {this.state.balanceCurr/1000000}
+                NRO balance: {this.state.balanceCurr/100}
               </SerivicesP>
               <SerivicesP>
                 NROT balance: {this.state.balanceCurr2}

@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import {Message,Step,Select,Checkbox,Radio, Container, Header, Button,Card,Icon,Grid,Form } from 'semantic-ui-react';
-import { NextResponse } from 'next/server';
+// import { NextResponse } from 'next/server';
 import {Link} from "react-router-dom";
 import Neros from './contracts/Neros.json'
 import getWeb3 from "./getWeb3";
@@ -17,7 +17,7 @@ const options = [
     { key: 'f', text: 'Female', value: 'female' },
     { key: 'o', text: 'Other', value: 'other' },
   ]
-  
+
   const steps = [
     {
       key: 'Payment',
@@ -26,30 +26,30 @@ const options = [
       title: 'Payment',
       description: 'Choose your payment method',
     },
-    { key: 'confirm',  
-    icon: 'check', 
+    { key: 'confirm',
+    icon: 'check',
     title: 'Confirm Order' },
   ]
   const steps2 = [
     {
       key: 'Payment',
-      
+
       icon: 'payment',
       title: 'Payment',
       description: 'Choose your payment method',
     },
-    { key: 'confirm', 
+    { key: 'confirm',
     active: true,
-    icon: 'check', 
+    icon: 'check',
     title: 'Confirm Order' },
   ]
 
 class PaymentNFT extends Component{
 
-    state = { 
-        storageValue: 0, 
-        web3: null, 
-        accounts: null, 
+    state = {
+        storageValue: 0,
+        web3: null,
+        accounts: null,
         contract: null,
         amount:'',
         loading:false,
@@ -139,10 +139,10 @@ class PaymentNFT extends Component{
           alignItems: 'center',
           justifyContent: 'center',
       }}>
-            
+
             <Container>
             <Grid>
-    
+
     <Grid.Column textAlign="center">
     <Header as='h2' icon>
     <Icon name='money bill alternate outline icon' />
@@ -150,7 +150,7 @@ class PaymentNFT extends Component{
     <Header.Subheader>
       Please fill the below to finalize the transaction
     </Header.Subheader>
-    
+
     <div style={{
                 color:'#01BF71',
                 display: 'flex',
@@ -167,7 +167,7 @@ class PaymentNFT extends Component{
         <Form.Group widths='equal'>
           <Form.Input required
           //error={{ content: 'Please enter your first name', pointing: 'below' }}
-          fluid label='First name' 
+          fluid label='First name'
           placeholder='First name'
           id='form-input-first-name'
            />
@@ -178,10 +178,10 @@ class PaymentNFT extends Component{
             options={options}
             placeholder='Gender'
           />
-          
+
         </Form.Group>
         <Form.Group widths='equal'>
-          
+
         <Form.Input required fluid label='Card number' placeholder='Card number' />
         <Form.Input required fluid label='Security code' placeholder='Security code' />
         <Form.Input required fluid label='Card expiration' placeholder='MM YY' />
@@ -189,13 +189,13 @@ class PaymentNFT extends Component{
         </Form.Group>
         <Form.Group widths='equal'>
         <Form.Input required
-        fluid label='Please enter the amount of NROCs' 
+        fluid label='Please enter the amount of NROCs'
         placeholder='amount'
         value={this.state.amount}
         onChange={this.handleChange.bind(this)} />
 
         </Form.Group>
-          
+
         <Form.Checkbox required label='I agree to the Terms and Conditions' />
         <Message error header="Oops!" content={this.state.errorMessage} />
         <Form.Button loading={this.state.loading} >Submit</Form.Button>

@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract NerosNFTCoin is ERC20 {
   address public owner;
   mapping(address => bool) public admins;
+  uint public price = 0.05 ether;
 
   constructor() ERC20 ("NerosNFTCoin", "NROC") {
     owner = msg.sender;
@@ -28,5 +29,18 @@ contract NerosNFTCoin is ERC20 {
   }
   function burnNFTCoin(address from, uint amount) public onlyAdmin {
     _burn(from, amount);
+  }
+
+  function decimals() public pure override returns (uint8) {
+      return 0;
+  }
+
+  function setPrice(uint _price) public onlyOwner {
+    price = _price;
+  }
+
+  function buyNFTCoin() public payable {
+    require(msg.value >= price, "NerosNFTCoin: User must send along some Ether to obtain NROC");
+    _transfer(owner, msg.sender, msg.value/price);
   }
 }

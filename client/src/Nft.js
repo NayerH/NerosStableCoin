@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import {Message,Step,Select,Checkbox,Radio, Container, Header, Button,Card,Icon,Grid,Form ,Image} from 'semantic-ui-react';
-import { NextResponse } from 'next/server';
+// import { NextResponse } from 'next/server';
 import {Link} from "react-router-dom";
 import Neros from './contracts/Neros.json'
 import NerosNFT from './contracts/NerosNFT.json'
@@ -16,12 +16,12 @@ import * as IPFS from 'ipfs-core'
 
 class Nft extends Component{
 
-    
 
-    state = { 
-        storageValue: 0, 
-        web3: null, 
-        accounts: null, 
+
+    state = {
+        storageValue: 0,
+        web3: null,
+        accounts: null,
         contract: null,
         amount:'',
         name:'',
@@ -35,7 +35,7 @@ class Nft extends Component{
 
          componentDidMount = async () => {
             try {
-        
+
              this.handleChange=this.handleChange.bind(this);
              this.onSubmit=this.onSubmit.bind(this);
               // Get network provider and web3 instance.
@@ -66,7 +66,7 @@ class Nft extends Component{
               console.log(token)
             //   let total= await instance.methods.totalSupply().call();
             //   console.log(total)
-              
+
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
               this.setState({ web3, accounts, contract: instance,balanceCurr:balance,id:token });
@@ -120,12 +120,12 @@ class Nft extends Component{
                 NerosNFT.abi,
                 deployedNetwork && deployedNetwork.address,
               );
-        
+
         await instance.methods.createNFT(results.path).send({
             from:accounts[0]
         }
         )
-      
+
         this.setState({loading:false});
         this.setState({success:true})}
         catch(err){
@@ -133,7 +133,7 @@ class Nft extends Component{
             this.setState({loading:false});
         }
     this.setState({loading:false});
-    
+
             // this.setState({loading:true});
             // const { accounts, contract } = this.state;
             // const web3 = await getWeb3();
@@ -147,7 +147,7 @@ class Nft extends Component{
             //     from:accounts[0]
             // }
             // )
-          
+
             // this.setState({loading:false});
             // this.setState({success:true})}
           }
@@ -176,7 +176,7 @@ class Nft extends Component{
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-              
+
             <Container >
             <Grid>
     <Grid.Column textAlign="center">
@@ -193,32 +193,32 @@ class Nft extends Component{
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-    NROC balance = {this.state.balanceCurr/1000000}
+    NROC balance = {this.state.balanceCurr}
     </div>
     </Header>
-    
+
     </Grid.Column>
     </Grid>
     <Form onSubmit={this.onSubmit} error={this.state.errorMessage} >
-    
+
         <Form.Group widths='equal'>
-          <Form.Input 
+          <Form.Input
           //error={{ content: 'Please enter your first name', pointing: 'below' }}
-          fluid label='First name' 
+          fluid label='First name'
           placeholder='First name'
           id='form-input-first-name'
            />
           <Form.Input  fluid label='Last name' placeholder='Last name' />
-          
+
         </Form.Group>
         <Form.Group widths='equal'>
         <Form.Input required
-        fluid label='Please enter the number of stocks' 
+        fluid label='Please enter the number of stocks'
         placeholder='stocks'
         value={this.state.amount}
         onChange={this.handleChange.bind(this)} />
         <Form.Input required
-        fluid label='Stock name' 
+        fluid label='Stock name'
         placeholder='name'
         value={this.state.name}
         onChange={this.handleChange2.bind(this)} />
@@ -230,7 +230,7 @@ class Nft extends Component{
         onChange={this.handleChange3.bind(this)}/>
      </div>
 </div>
-          
+
         <Form.Checkbox required label='I agree to the Terms and Conditions' />
         <Message error header="Oops!" content={this.state.errorMessage} />
         <Form.Button loading={this.state.loading} >Transfer</Form.Button>

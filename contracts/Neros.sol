@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 import "./IERC20.sol";
 import "./BankHandler.sol";
 import "./NerosNFTCoin.sol";
+import "./NerosNFT.sol";
 
 contract Neros is ERC20Interface {
     string public name;
@@ -12,6 +13,7 @@ contract Neros is ERC20Interface {
     uint8 public decimals;
     BankHandler private bankHandler;
     NerosNFTCoin private nerosNFTCoin;
+    NerosNFT private nerosNFT;
 
     mapping(address => uint) balances;
     mapping(address => mapping(address => uint)) allowed;
@@ -21,7 +23,7 @@ contract Neros is ERC20Interface {
         symbol = "NRO";
         owner = msg.sender;
         _totalSupply = 0;
-        decimals = 6;
+        decimals = 2;
         bankHandler = BankHandler(_bankHandler);
         nerosNFTCoin = NerosNFTCoin(_nerosNFTCoin);
     }
@@ -54,7 +56,7 @@ contract Neros is ERC20Interface {
         //CALLS mintNewTokens
         mintNewTokens(tokens, to);
         //MINT NerosNFTCoin
-        nerosNFTCoin.mintNFTCoin(owner, tokens/100);
+        nerosNFTCoin.mintNFTCoin(owner, tokens/10000);
     }
 
     function coinsToFiat(address from, uint tokens) public {
@@ -104,5 +106,13 @@ contract Neros is ERC20Interface {
         changeAllowance(from, msg.sender, allowance(from, msg.sender) - tokens);
         _transferFrom(from, to, tokens);
         return true;
+    }
+
+    function setNerosNFT(address _nerosNFT) public isOwner {
+        nerosNFT = NerosNFT(_nerosNFT);
+    }
+    function exchangeNFT(address nftOwner, uint nftId, uint tokens) public {
+        nerosNFT.exchangeNFT(nftOwner, msg.sender, nftId);
+        transfer(nftOwner, tokens);
     }
 }

@@ -6,10 +6,10 @@ import getWeb3 from "../../getWeb3";
 import { render } from 'react-dom';
 
 class About  extends Component{
-    state = { 
-        storageValue: 0, 
-        web3: null, 
-        accounts: null, 
+    state = {
+        storageValue: 0,
+        web3: null,
+        accounts: null,
         contract: null,
         amount:'',
         addressTo:'',
@@ -21,7 +21,7 @@ class About  extends Component{
 
          componentDidMount = async () => {
             try {
-        
+
               // Get network provider and web3 instance.
               const web3 = await getWeb3();
               // Use web3 to get the user's accounts.
@@ -36,11 +36,16 @@ class About  extends Component{
                 deployedNetwork && deployedNetwork.address,
               );
               console.log(instance)
-              const balance=await instance.methods.balanceOf(accounts[0]).call();
+              let balance=await instance.methods.balanceOf(accounts[0]).call();
               console.log(balance)
-              let total= await instance.methods.totalSupply().call();
-              console.log(total)
+              balance = balance/100;
+              console.log(balance)
               
+              let total = await instance.methods.totalSupply().call();
+              console.log(total)
+              total = total/100;
+              console.log(total)
+
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
               this.setState({ web3, accounts, contract: instance,balanceCurr:total });
@@ -54,7 +59,7 @@ class About  extends Component{
           };
           render(){
     return(
-      
+
         <>
         <InfoContainer lightBg={false} id={'about'} >
             <InfoWrapper>
