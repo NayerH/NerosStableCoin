@@ -178,7 +178,7 @@ contract ERC721 is IERC721, IERC721Metadata {
     }
 
     function baseURI() internal pure returns(string memory) {
-      return "";
+      return "https://ipfs.io/ipfs/";
     }
 
 
