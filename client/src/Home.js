@@ -8,7 +8,7 @@ import { Container, Button,Card,Icon,Grid } from 'semantic-ui-react';
 import '../src/Home.css'
 import Home22 from "./HomeSection";
 import InfoSection from './components/InfoSection/index'
-import { homeObjOne,homeObjTwo,homeObjThree, homeObjFour, homeObjFive, homeObjSix  } from './components/InfoSection/data';
+import { homeObjOne,homeObjTwo,homeObjThree, homeObjFour, homeObjFive, homeObjSix ,homeObjSeven } from './components/InfoSection/data';
 import Navbar2 from './components/Navbar2';
 function Home(){
     return(
@@ -21,6 +21,7 @@ function Home(){
         <InfoSection {...homeObjFour} />
         <InfoSection {...homeObjFive} />
         <InfoSection {...homeObjSix} />
+        <InfoSection {...homeObjSeven} />
         
         <Footer />
         </div>

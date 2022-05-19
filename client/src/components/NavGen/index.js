@@ -95,6 +95,16 @@ const NavGen=({toggle})=>{
                         offset={-80}
                         >History</NavLinks>
                     </NavItem>
+                    <NavItem>
+                        <NavLinks 
+                        to= '/market'
+                        smooth={true}
+                        duration={500}
+                        spy={true}
+                        exact='true'
+                        offset={-80}
+                        >NFT store</NavLinks>
+                    </NavItem>
                     <NavBtn>
                         <NavBtnLink 
                         to="/Account"

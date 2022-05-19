@@ -4,7 +4,7 @@ import Neros from '../../contracts/Neros.json'
 import getWeb3 from "../../getWeb3";
 import NerosNFT from '../../contracts/NerosNFT.json'
 import NerosNFTCoin from '../../contracts/NerosNFTCoin.json'
-import {ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './AccountElement'
+import {ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './marketElements'
 import prof from '../../images/prof.svg'
 import admin from '../../images/admin.svg'
 import * as IPFS from 'ipfs-core'
@@ -24,7 +24,9 @@ function show_image(src, width, height, alt) {
   document.body.appendChild(img);
 }
 
-class Account extends Component{
+
+
+class market extends Component{
     state = {
         storageValue: 0,
         web3: null,
@@ -42,9 +44,9 @@ class Account extends Component{
         address:'',
         source:'',
         addressInput:'',
-        name:'',
-        quantity:0,
-        desc:''
+        name:[],
+        quantity:[],
+        desc:[],
          };
 
          componentDidMount = async () => {
@@ -89,7 +91,7 @@ class Account extends Component{
               let owner2=await instance3.methods.owner().call();
               console.log(owner2)
 
-              let NFTs=await instance2.methods.getMyNFTs().call();
+              let NFTs=await instance2.methods.tokenCounter().call();
               console.log(NFTs)
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
@@ -98,7 +100,8 @@ class Account extends Component{
               console.log(this.state.admin2)
 
               
-              let token=await instance2.methods.tokenURI("1").call();
+              for (let i = 0; i < NFTs; i++){
+              let token=await instance2.methods.tokenURI(i).call();
               // fetch(token)
               // .then(response => response.json())
               // .then(res => 
@@ -109,11 +112,27 @@ class Account extends Component{
               fetch(token)
               .then(response => response.json())
               .then((res)=>{
-                this.setState({quantity:res.quantity,
-                name:res.name,desc:res.description})
+                this.setState({quantity:[this.state.quantity,res.quantity],
+                name:[this.state.name,res.name],desc:[this.state.desc,res.description]})
                 console.log(res)
 
               })
+
+
+            }
+            var allUsers = [];
+
+// Populate users array
+            for(var key in this.state.name) {
+            allUsers.push(this.state.name[key]);
+             }
+             for(var key in this.state.desc) {
+                allUsers.push(this.state.desc[key]);
+                 }
+                 for(var key in this.state.quantity) {
+                    allUsers.push(this.state.quantity[key]);
+                     }
+                console.log(allUsers)
               
               
             } catch (error) {
@@ -160,133 +179,27 @@ class Account extends Component{
 
           
     render(){
-      console.log(this.state.quantity)
-      if(this.state.admin2)
-      {
+    
       return(
         
         <SerivicesContainer>
-          <SerivicesH1>Account Summary</SerivicesH1>
+          <SerivicesH1>NFTs for sale</SerivicesH1>
           <SerivicesWrapperOwner>
-          
-            <SerivicesCard>
-              <ServicesIcon src={prof} />
-              <SerivicesH2>Youssef (Admin)</SerivicesH2>
-              <SerivicesP>
-                NRO balance: {this.state.balanceCurr/100}
-              </SerivicesP>
-              <SerivicesP>
-                NROT balance: {this.state.balanceCurr2}
-              </SerivicesP>
-              <SerivicesP>
-                isAdmin:True
-              </SerivicesP>
-              <SerivicesP>
-                isOwner:False
-              </SerivicesP>
-            </SerivicesCard>
             <SerivicesCard>
               <ServicesIcon src={"https://ipfs.io/ipfs/QmVRtrFSwGpr3gpyLvJCbcngUgpiR1FPmHXAyd5NJLQkf7"} />
-              <SerivicesH2>NFTs pending</SerivicesH2>
-              <SerivicesP>
-                Name: {this.state.name}
-              </SerivicesP>
+              <SerivicesH2>{this.state.name}</SerivicesH2>
               <SerivicesP>
                 Type: {this.state.desc}
               </SerivicesP>
               <SerivicesP>
                 Quantity: {this.state.quantity}
               </SerivicesP>
-              <div class="ui buttons">
-  <button class="ui positive loading={this.state.loading} button">Accept</button>
-  <div class="or"></div>
-  <button class="negative ui loading={this.state.loading} button">Burn</button>
-</div>
             </SerivicesCard>
           </SerivicesWrapperOwner>
         </SerivicesContainer>
       )
-  }
-  else if(this.state.address==this.state.owner){
-    return(
-    <SerivicesContainer>
-          <SerivicesH1>Account Summary</SerivicesH1>
-          <SerivicesWrapperOwner>
-          
-            <SerivicesCard>
-              <ServicesIcon src={prof} />
-              <SerivicesH2>Youssef (Boss)</SerivicesH2>
-              <SerivicesP>
-                NRO balance: {this.state.balanceCurr/100}
-              </SerivicesP>
-              <SerivicesP>
-                NROT balance: {this.state.balanceCurr2}
-              </SerivicesP>
-              <SerivicesP>
-                isAdmin:False
-              </SerivicesP>
-              <SerivicesP>
-                isOwner:True
-              </SerivicesP>
-            </SerivicesCard>
-            <SerivicesCard>
-              <ServicesIcon src={admin} />
-              <SerivicesH2>Add/Remove Admins</SerivicesH2>
-              <Form2 onSubmit={this.onSubmit} error={this.state.errorMessage}>
-              <FormWrap>
-                <FormContent>
-                  <FormLabel>Please enter the address of the Admin you would like to add/remove</FormLabel>
-                  <FormInput required
-                  value={this.state.addressInput}
-                  onChange={this.handleChange.bind(this)} />
-                  <div class="ui buttons">
-                  <button class="ui positive loading={this.state.loading} button">Add</button>
-                  <div class="or"></div>
-                  <button class="negative ui loading={this.state.loading} button">Remove</button>
-                  </div>
-                </FormContent>
-              </FormWrap>
-              
-              </Form2>
-            </SerivicesCard>
-          </SerivicesWrapperOwner>
-        </SerivicesContainer>
-    )
-  }
-  else
-  {
-    return(
-      <SerivicesContainer>
-          <SerivicesH1>Account Summary</SerivicesH1>
-          <SerivicesWrapperOwner>
-            <SerivicesCard>
-              <ServicesIcon src={prof} />
-              <SerivicesH2>Address:{this.state.address}</SerivicesH2>
-              <SerivicesP>
-                NRO balance: {this.state.balanceCurr/100}
-              </SerivicesP>
-              <SerivicesP>
-                NROT balance: {this.state.balanceCurr2}
-              </SerivicesP>
-              <SerivicesP>
-                isAdmin:False
-              </SerivicesP>
-              <SerivicesP>
-                isOwner:False
-              </SerivicesP>
-            </SerivicesCard>
-            <SerivicesCard>
-              <ServicesIcon src={"https://ipfs.io/ipfs/QmVRtrFSwGpr3gpyLvJCbcngUgpiR1FPmHXAyd5NJLQkf7"} />
-              <SerivicesH2>My NFTs</SerivicesH2>
-              
-            </SerivicesCard>
-          </SerivicesWrapperOwner>
-
-        </SerivicesContainer>
-
-    )
-  }
+  
 }
 }
 
-export default Account;
+export default market;

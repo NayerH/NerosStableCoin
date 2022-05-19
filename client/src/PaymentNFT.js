@@ -5,6 +5,7 @@ import {Message,Step,Select,Checkbox,Radio, Container, Header, Button,Card,Icon,
 // import { NextResponse } from 'next/server';
 import {Link} from "react-router-dom";
 import Neros from './contracts/Neros.json'
+import NerosNFTCoin from './contracts/NerosNFTCoin.json'
 import getWeb3 from "./getWeb3";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { Button2 } from "./components/Button2";
@@ -54,7 +55,9 @@ class PaymentNFT extends Component{
         amount:'',
         loading:false,
         errorMessage:'',
-        success:false
+        success:false,
+        price:0.001,
+        amtStr:''
          };
 
   componentDidMount = async () => {
@@ -70,9 +73,9 @@ class PaymentNFT extends Component{
       console.log(accounts);
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = Neros.networks[networkId];
+      const deployedNetwork = NerosNFTCoin.networks[networkId];
       const instance = new web3.eth.Contract(
-        Neros.abi,
+        NerosNFTCoin.abi,
         deployedNetwork && deployedNetwork.address,
       );
 
@@ -96,10 +99,12 @@ class PaymentNFT extends Component{
        const web3 = await getWeb3();
        const accounts = await web3.eth.getAccounts();
        console.log(accounts[0]);
-       const newamt=this.state.amount*1000000;
-       await contract.methods.fiatToCoins(accounts[0],newamt).send({
+       const newamt=this.state.amount*this.state.price;
+       let s=newamt.toString();
+       await contract.methods.buyNFTCoin().send({
+           value:web3.utils.toWei(s, "ether"),
            from:accounts[0]
-       }
+        }
        )
        this.setState({loading:false});
        this.setState({success:true})}
@@ -158,7 +163,7 @@ class PaymentNFT extends Component{
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-    NROC curent exchange rate= 0.1 ETH
+    NROC curent exchange rate= {this.state.price}
     </div>
     </Header>
     </Grid.Column>
@@ -178,13 +183,6 @@ class PaymentNFT extends Component{
             options={options}
             placeholder='Gender'
           />
-
-        </Form.Group>
-        <Form.Group widths='equal'>
-
-        <Form.Input required fluid label='Card number' placeholder='Card number' />
-        <Form.Input required fluid label='Security code' placeholder='Security code' />
-        <Form.Input required fluid label='Card expiration' placeholder='MM YY' />
 
         </Form.Group>
         <Form.Group widths='equal'>

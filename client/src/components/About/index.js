@@ -73,13 +73,13 @@ class About  extends Component{
                     </TextWrapper>
                    <TextWrapper>
                    <TopLine2>
-                    Total supply: {this.state.balanceCurr/1000000} NRO
+                    Total supply: {this.state.balanceCurr} NRO
                     </TopLine2>
                     <TopLine2>
                       ----------------
                     </TopLine2>
                     <TopLine2>
-                    Bank Balance: {this.state.balanceCurr/1000000} USD
+                    Bank Balance: {this.state.balanceCurr} USD
                     </TopLine2>
                     </TextWrapper>
                     </Column1>

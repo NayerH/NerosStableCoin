@@ -15,6 +15,7 @@ import transactions from './transactions'
 import transfer from './transfer'
 import About from "./About";
 import Nft from "./Nft";
+import market from './market'
 
 
 class App extends Component {
@@ -104,6 +105,7 @@ class App extends Component {
           <Route path="/transfer" component={transfer}/>
           <Route path="/About" component={About}/>
           <Route path="/Nft" component={Nft}/>
+          <Route path="/market" component={market}/>
         </Switch>
       </div>
       </Router>
