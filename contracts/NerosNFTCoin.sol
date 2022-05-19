@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract NerosNFTCoin is ERC20 {
   address public owner;
   mapping(address => bool) public admins;
-  uint public price = 0.05 ether;
+  uint public price = 0.001 ether;
 
   constructor() ERC20 ("NerosNFTCoin", "NROC") {
     owner = msg.sender;
