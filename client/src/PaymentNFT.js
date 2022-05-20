@@ -79,9 +79,11 @@ class PaymentNFT extends Component{
         deployedNetwork && deployedNetwork.address,
       );
 
+      let currPrice = instance.methods.price().call();
+
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance });
+      this.setState({ web3, accounts, contract: instance, price: currPrice });
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(

@@ -85,10 +85,11 @@ class market extends Component{
                 deployedNetwork3 && deployedNetwork3.address,
               );
 
-              let isAdmin=await instance3.methods.admins(accounts[0]).call();
-              console.log(isAdmin+"hiiiiiiiii")
-
-              let owner2=await instance3.methods.owner().call();
+              //Should be instance2 because it should be NerosNFT not NerosNFTCoin
+              let isAdmin=await instance2.methods.admins(accounts[0]).call();
+              console.log("isAdmin: ",isAdmin)
+              //Should be instance2 because it should be NerosNFT not NerosNFTCoin
+              let owner2=await instance2.methods.owner().call();
               console.log(owner2)
 
               let NFTs=await instance2.methods.tokenCounter().call();
@@ -99,16 +100,16 @@ class market extends Component{
               this.setState({admin2:isAdmin,address:accounts,owner:owner2});
               console.log(this.state.admin2)
 
-              
+
               for (let i = 0; i < NFTs; i++){
               let token=await instance2.methods.tokenURI(i).call();
               // fetch(token)
               // .then(response => response.json())
-              // .then(res => 
+              // .then(res =>
               //   fetch('https://ipfs.io/ipfs/' + res.image)
               //   .then(responseImg => console.log(responseImg))
               // )
-              
+
               fetch(token)
               .then(response => response.json())
               .then((res)=>{
@@ -133,8 +134,8 @@ class market extends Component{
                     allUsers.push(this.state.quantity[key]);
                      }
                 console.log(allUsers)
-              
-              
+
+
             } catch (error) {
               // Catch any errors for any of the above operations.
               alert(
@@ -167,7 +168,7 @@ class market extends Component{
             catch(err){
                 this.setState({errorMessage:err.message})
                 this.setState({loading:false});
-              
+
             }
         };
 
@@ -175,13 +176,13 @@ class market extends Component{
             this.setState({addressInput:event.target.value});
         }
 
-        
 
-          
+
+
     render(){
-    
+
       return(
-        
+
         <SerivicesContainer>
           <SerivicesH1>NFTs for sale</SerivicesH1>
           <SerivicesWrapperOwner>
@@ -198,7 +199,7 @@ class market extends Component{
           </SerivicesWrapperOwner>
         </SerivicesContainer>
       )
-  
+
 }
 }
 

@@ -10,6 +10,7 @@ contract NerosNFTCoin is ERC20 {
 
   constructor() ERC20 ("NerosNFTCoin", "NROC") {
     owner = msg.sender;
+    admins[msg.sender] = true;
   }
   modifier onlyOwner() {
       require(msg.sender == owner, "NerosNFTCoin: Only owner is allowed to do this functionality");
@@ -42,5 +43,9 @@ contract NerosNFTCoin is ERC20 {
   function buyNFTCoin() public payable {
     require(msg.value >= price, "NerosNFTCoin: User must send along some Ether to obtain NROC");
     _transfer(owner, msg.sender, msg.value/price);
+  }
+
+  function withdrawEtherBalance() public onlyOwner {
+    require(owner.send(this.balance));
   }
 }
