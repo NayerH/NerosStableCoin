@@ -47,19 +47,25 @@ contract NerosNFT is ERC721 {
     }
   }
 
-  function getAllForSale() public view returns (uint[] memory) {
-    uint[] memory res = new uint[](tokenCounter);
+  function getAllForSale() public view returns (int[] memory) {
+    int[] memory res = new int[](tokenCounter + 1);
     uint index = 0;
-    for(uint i = 0; i <= tokenCounter; i++){
+    for(uint i = 0; i < tokenCounter; i++){
       if(isForSale[i]){
-         res[index++] = i;
+         res[index++] = int(i);
       }
     }
+    res[index] = -1;
     return res;
   }
 
   function getMyNFTs() public view returns (uint[] memory) {
-    return ownedTokens[msg.sender];
+    uint length = ownedTokens[msg.sender].length;
+    uint[] memory res = new uint[](length);
+    for(uint i = 0; i < length; i++) {
+      res[i] = ownedTokens[msg.sender][i];
+    }
+    return res;
   }
 
   function exchangeNFT(address from, address to, uint256 tokenId) public {

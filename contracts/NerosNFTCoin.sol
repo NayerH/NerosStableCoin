@@ -46,6 +46,6 @@ contract NerosNFTCoin is ERC20 {
   }
 
   function withdrawEtherBalance() public onlyOwner {
-    require(owner.send(this.balance));
+    require(payable(owner).send(address(this).balance));
   }
 }

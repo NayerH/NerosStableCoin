@@ -58,7 +58,7 @@ class Account extends Component{
          };
 
 
-        
+
 
          componentDidMount = async () => {
             try {
@@ -98,8 +98,7 @@ class Account extends Component{
                 NerosNFTCoin.abi,
                 deployedNetwork3 && deployedNetwork3.address,
               );
-              var arrayName = new Array();
-              arrayName =await instance2.methods.getMyNFTs().call();
+              var arrayName = await instance2.methods.getMyNFTs().call();
               console.log("myNFts:",arrayName)
               //Should be instance2 because it should be NerosNFT not NerosNFTCoin
               let isAdmin=await instance2.methods.admins(accounts[0]).call();
@@ -162,13 +161,13 @@ class Account extends Component{
               NerosNFT.abi,
               deployedNetwork2 && deployedNetwork2.address,
             );
-            
+
             await instance2.methods.addOrRemoveAdmin(this.state.addressInput,this.state.addOrRemove).send({
                 from:accounts[0]
             }
             )
-          
-          
+
+
             this.setState({loading:false});
             this.setState({success:true})}
             catch(err){
@@ -192,7 +191,7 @@ class Account extends Component{
             NerosNFT.abi,
             deployedNetwork2 && deployedNetwork2.address,
           );
-      
+
           console.log("ana COunter before:",this.state.counter)
           console.log(this.state.acceptOrReject)
           await instance2.methods.setTransferable(this.state.counter,this.state.acceptOrReject).send({
@@ -205,14 +204,14 @@ class Account extends Component{
           window.localStorage.setItem('counter', JSON.stringify(this.state.counter));
           console.log("ana COunter after:",this.state.counter)
 
-        
-          
-          
+
+
+
           this.setState({loading:false});
           this.setState({success:true})
-          
+
         }
-          
+
           catch(err){
               this.setState({errorMessage:err.message})
               this.setState({loading:false});
@@ -220,7 +219,7 @@ class Account extends Component{
           }
       };
 
-       
+
 
           handleChange(event){
             this.setState({addressInput:event.target.value});
@@ -228,16 +227,16 @@ class Account extends Component{
 
 
         handleClick(button) {
-          
+
             this.setState({addOrRemove:button})
-            
-              
+
+
         }
         handleClick2(button) {
-          
+
           this.setState({acceptOrReject:button})
-          
-            
+
+
       }
 
     render(){
@@ -353,7 +352,7 @@ class Account extends Component{
   <button class="negative ui  button"loading={this.state.loading}>Burn</button>
 </div>
             </SerivicesCard>
-          
+
           </SerivicesWrapperOwner>
         </SerivicesContainer>
     )
