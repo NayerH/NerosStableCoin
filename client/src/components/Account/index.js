@@ -4,7 +4,7 @@ import Neros from '../../contracts/Neros.json'
 import getWeb3 from "../../getWeb3";
 import NerosNFT from '../../contracts/NerosNFT.json'
 import NerosNFTCoin from '../../contracts/NerosNFTCoin.json'
-import {ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './AccountElement'
+import {SerivicesH3,Form3,SerivicesWrapperOwnerAdmin,ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './AccountElement'
 import prof from '../../images/prof.svg'
 import admin from '../../images/admin.svg'
 import * as IPFS from 'ipfs-core'
@@ -25,6 +25,8 @@ function show_image(src, width, height, alt) {
 }
 
 class Account extends Component{
+
+
     state = {
         storageValue: 0,
         web3: null,
@@ -44,12 +46,26 @@ class Account extends Component{
         addressInput:'',
         name:'',
         quantity:0,
-        desc:''
+        desc:'',
+        addOrRemove:'',
+        isloading:'loading',
+        acceptOrReject:'',
+        enter1:false,
+        enter2:false,
+        currToken:0,
+        counter:0,
+        counter2:-1
          };
+
+
+        
 
          componentDidMount = async () => {
             try {
-
+            let count2 = window.localStorage.getItem('counter');
+            this.setState({counter:count2})
+             window.localStorage.setItem('counter', JSON.stringify(this.state.counter));
+             console.log("ana el counter yala",this.state.count)
               // Get network provider and web3 instance.
               const web3 = await getWeb3();
               // Use web3 to get the user's accounts.
@@ -82,6 +98,9 @@ class Account extends Component{
                 NerosNFTCoin.abi,
                 deployedNetwork3 && deployedNetwork3.address,
               );
+              var arrayName = new Array();
+              arrayName =await instance2.methods.getMyNFTs().call();
+              console.log("myNFts:",arrayName)
               //Should be instance2 because it should be NerosNFT not NerosNFTCoin
               let isAdmin=await instance2.methods.admins(accounts[0]).call();
               console.log("isAdmin: ",isAdmin)
@@ -97,8 +116,12 @@ class Account extends Component{
               this.setState({admin2:isAdmin,address:accounts,owner:owner2});
               console.log(this.state.admin2)
 
-
-              let token=await instance2.methods.tokenURI("1").call();
+               let x=await instance2.methods.tokenCounter().call();
+              let count = window.localStorage.getItem('counter');
+              console.log("ana el count",count)
+              let token=await instance2.methods.tokenURI(count).call();
+              this.setState({currToken:x})
+              console.log("ana currToken:",x)
               // fetch(token)
               // .then(response => response.json())
               // .then(res =>
@@ -139,10 +162,13 @@ class Account extends Component{
               NerosNFT.abi,
               deployedNetwork2 && deployedNetwork2.address,
             );
-            await instance2.methods.addOrRemoveAdmin(this.state.addressInput,true).send({
+            
+            await instance2.methods.addOrRemoveAdmin(this.state.addressInput,this.state.addOrRemove).send({
                 from:accounts[0]
             }
             )
+          
+          
             this.setState({loading:false});
             this.setState({success:true})}
             catch(err){
@@ -152,20 +178,144 @@ class Account extends Component{
             }
         };
 
+        onSubmit2=async(event)=>{
+          event.preventDefault();
+          try{
+          this.setState({loading:true});
+          console.log("ana mashy S755555")
+          const web3 = await getWeb3();
+          const accounts = await web3.eth.getAccounts();
+          const networkId = await web3.eth.net.getId();
+          const deployedNetwork2 = NerosNFT.networks[networkId];
+          //console.log(this.state.addressInput)
+          const instance2 = new web3.eth.Contract(
+            NerosNFT.abi,
+            deployedNetwork2 && deployedNetwork2.address,
+          );
+      
+          console.log("ana COunter before:",this.state.counter)
+          console.log(this.state.acceptOrReject)
+          await instance2.methods.setTransferable(this.state.counter,this.state.acceptOrReject).send({
+              from:accounts[0]
+          }
+          )
+          let count = window.localStorage.getItem('counter');
+          count=count+1
+          this.setState({counter:count})
+          window.localStorage.setItem('counter', JSON.stringify(this.state.counter));
+          console.log("ana COunter after:",this.state.counter)
+
+        
+          
+          
+          this.setState({loading:false});
+          this.setState({success:true})
+          
+        }
+          
+          catch(err){
+              this.setState({errorMessage:err.message})
+              this.setState({loading:false});
+
+          }
+      };
+
+       
+
           handleChange(event){
             this.setState({addressInput:event.target.value});
         }
 
 
-
+        handleClick(button) {
+          
+            this.setState({addOrRemove:button})
+            
+              
+        }
+        handleClick2(button) {
+          
+          this.setState({acceptOrReject:button})
+          
+            
+      }
 
     render(){
-      console.log(this.state.quantity)
-      if(this.state.admin2)
+      if(this.state.address==this.state.owner)
       {
       return(
 
         <SerivicesContainer>
+          <SerivicesH1>Account Summary</SerivicesH1>
+          <SerivicesWrapperOwnerAdmin>
+
+            <SerivicesCard>
+              <ServicesIcon src={prof} />
+              <SerivicesH2>Youssef (Boss)</SerivicesH2>
+              <SerivicesP>
+                NRO balance: {this.state.balanceCurr/100}
+              </SerivicesP>
+              <SerivicesP>
+                NROT balance: {this.state.balanceCurr2}
+              </SerivicesP>
+              <SerivicesP>
+                isAdmin:True
+              </SerivicesP>
+              <SerivicesP>
+                isOwner:True
+              </SerivicesP>
+            </SerivicesCard>
+            <SerivicesCard>
+              <ServicesIcon src={admin} />
+              <SerivicesH2>Add/Remove Admins</SerivicesH2>
+              <Form2 onSubmit={this.onSubmit} error={this.state.errorMessage}>
+              <FormWrap>
+                <FormContent>
+                  <FormLabel>Please enter the address of the Admin you would like to add/remove</FormLabel>
+                  <FormInput required
+                  value={this.state.addressInput}
+                  onChange={this.handleChange.bind(this)} />
+                  <div class="ui buttons">
+                  <button  onClick={() => this.handleClick(true)}  class="ui positive  {this.state.isloading}  button">Add</button>
+                  <div class="or"></div>
+                  <button onClick={() => this.handleClick(false)}  class="negative ui  button"loading={this.state.loading}>Remove</button>
+                  </div>
+                </FormContent>
+              </FormWrap>
+
+              </Form2>
+            </SerivicesCard>
+            <SerivicesCard>
+              <ServicesIcon src={"https://ipfs.io/ipfs/QmVRtrFSwGpr3gpyLvJCbcngUgpiR1FPmHXAyd5NJLQkf7"} />
+              <SerivicesH3>NFTs pending</SerivicesH3>
+              <Form3 onSubmit={this.onSubmit2} error={this.state.errorMessage}>
+              <FormWrap>
+                <FormContent>
+              <SerivicesP>
+                Name: {this.state.name}
+              </SerivicesP>
+              <SerivicesP>
+                Type: {this.state.desc}
+              </SerivicesP>
+              <SerivicesP>
+                Quantity: {this.state.quantity}
+              </SerivicesP>
+              <div class="ui buttons">
+  <button onClick={() => this.handleClick2(true)} class="ui positive  button"loading={this.state.loading}>Accept</button>
+  <div class="or"></div>
+  <button onClick={() => this.handleClick2(false)} class="negative ui  button"loading={this.state.loading}>Burn</button>
+</div>
+</FormContent>
+</FormWrap>
+</Form3>
+            </SerivicesCard>
+          </SerivicesWrapperOwnerAdmin>
+        </SerivicesContainer>
+      )
+  }
+  else if(this.state.admin2 && (this.state.address!=this.state.owner)){
+    return(
+    <SerivicesContainer>
           <SerivicesH1>Account Summary</SerivicesH1>
           <SerivicesWrapperOwner>
 
@@ -198,57 +348,12 @@ class Account extends Component{
                 Quantity: {this.state.quantity}
               </SerivicesP>
               <div class="ui buttons">
-  <button class="ui positive loading={this.state.loading} button">Accept</button>
+  <button  class="ui positive  button"loading={this.state.loading} >Accept</button>
   <div class="or"></div>
-  <button class="negative ui loading={this.state.loading} button">Burn</button>
+  <button class="negative ui  button"loading={this.state.loading}>Burn</button>
 </div>
             </SerivicesCard>
-          </SerivicesWrapperOwner>
-        </SerivicesContainer>
-      )
-  }
-  else if(this.state.address===this.state.owner){
-    return(
-    <SerivicesContainer>
-          <SerivicesH1>Account Summary</SerivicesH1>
-          <SerivicesWrapperOwner>
-
-            <SerivicesCard>
-              <ServicesIcon src={prof} />
-              <SerivicesH2>Youssef (Boss)</SerivicesH2>
-              <SerivicesP>
-                NRO balance: {this.state.balanceCurr/100}
-              </SerivicesP>
-              <SerivicesP>
-                NROT balance: {this.state.balanceCurr2}
-              </SerivicesP>
-              <SerivicesP>
-                isAdmin:False
-              </SerivicesP>
-              <SerivicesP>
-                isOwner:True
-              </SerivicesP>
-            </SerivicesCard>
-            <SerivicesCard>
-              <ServicesIcon src={admin} />
-              <SerivicesH2>Add/Remove Admins</SerivicesH2>
-              <Form2 onSubmit={this.onSubmit} error={this.state.errorMessage}>
-              <FormWrap>
-                <FormContent>
-                  <FormLabel>Please enter the address of the Admin you would like to add/remove</FormLabel>
-                  <FormInput required
-                  value={this.state.addressInput}
-                  onChange={this.handleChange.bind(this)} />
-                  <div class="ui buttons">
-                  <button class="ui positive loading={this.state.loading} button">Add</button>
-                  <div class="or"></div>
-                  <button class="negative ui loading={this.state.loading} button">Remove</button>
-                  </div>
-                </FormContent>
-              </FormWrap>
-
-              </Form2>
-            </SerivicesCard>
+          
           </SerivicesWrapperOwner>
         </SerivicesContainer>
     )

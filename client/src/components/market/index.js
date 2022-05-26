@@ -11,6 +11,9 @@ import * as IPFS from 'ipfs-core'
 import { CID } from 'multiformats/cid'
 import { base58btc } from 'multiformats/bases/base58'
 import { base64 } from "multiformats/bases/base64"
+import { SerivicesWrapperOwnerAdmin } from '../Account/AccountElement';
+import img from '../../images/11.svg'
+import { Button2 } from "../Button2";
 
 
 function show_image(src, width, height, alt) {
@@ -24,6 +27,35 @@ function show_image(src, width, height, alt) {
   document.body.appendChild(img);
 }
 
+var someData = [
+  {name: "Max", description: "Mustermann", quantity: 40},
+  {name: "Hagbard", description: "Celine", quantity: 44},
+  {name: "Karl", description: "Koch", quantity: 42},
+];
+
+
+
+const data =
+    [
+    {
+        id: 1,
+        name : "Game Of Throne S01 E01" ,
+        description: "THis is description",
+        quantity: "Hi I am test content"
+    },
+{
+    id: 1,
+        name : "Game Of Throne S01 E01" ,
+        description: "THis is description",
+        quantity: "Hi I am test content"
+},
+{
+   id: 1,
+        name : "Game Of Throne S01 E01" ,
+        description: "THis is description",
+        quantity: "Hi I am test content"
+}
+];
 
 
 class market extends Component{
@@ -47,6 +79,8 @@ class market extends Component{
         name:[],
         quantity:[],
         desc:[],
+        fin:[],
+        imgsrc:[]
          };
 
          componentDidMount = async () => {
@@ -99,7 +133,10 @@ class market extends Component{
               this.setState({ web3, accounts, contract: instance,balanceCurr:balance,balanceCurr2:balance2 });
               this.setState({admin2:isAdmin,address:accounts,owner:owner2});
               console.log(this.state.admin2)
-
+              const employees = {
+                accounting: []
+              };
+              
 
               for (let i = 0; i < NFTs; i++){
               let token=await instance2.methods.tokenURI(i).call();
@@ -107,33 +144,44 @@ class market extends Component{
               // .then(response => response.json())
               // .then(res =>
               //   fetch('https://ipfs.io/ipfs/' + res.image)
-              //   .then(responseImg => console.log(responseImg))
+              //   .then(responseImg => this.setState({imgsrc:responseImg.url}))
               // )
 
               fetch(token)
               .then(response => response.json())
               .then((res)=>{
-                this.setState({quantity:[this.state.quantity,res.quantity],
-                name:[this.state.name,res.name],desc:[this.state.desc,res.description]})
-                console.log(res)
+                // this.setState({quantity:[this.state.quantity,res.quantity],
+                // name:[this.state.name,res.name],desc:[this.state.desc,res.description]})
+                 
+                employees.accounting.push({ 
+                  "name" : res.name,
+                  "description"  : res.description,
+                  "quantity"       : res.quantity,
+                  "image":'https://ipfs.io/ipfs/'+res.image
+              });
+              // data[i].name=res.name
+              // data[i].description=res.description
+              // data[i].quantity=res.quantity
 
               })
+              console.log(employees)
 
 
             }
+            this.setState({fin:employees.accounting})
             var allUsers = [];
 
 // Populate users array
-            for(var key in this.state.name) {
-            allUsers.push(this.state.name[key]);
-             }
-             for(var key in this.state.desc) {
-                allUsers.push(this.state.desc[key]);
-                 }
-                 for(var key in this.state.quantity) {
-                    allUsers.push(this.state.quantity[key]);
-                     }
-                console.log(allUsers)
+            // for(var key in this.state.name) {
+            // allUsers.push(this.state.name[key]);
+            //  }
+            //  for(var key in this.state.desc) {
+            //     allUsers.push(this.state.desc[key]);
+            //      }
+            //      for(var key in this.state.quantity) {
+            //         allUsers.push(this.state.quantity[key]);
+            //          }
+            //     console.log(allUsers)
 
 
             } catch (error) {
@@ -145,58 +193,42 @@ class market extends Component{
             }
           };
 
-          onSubmit=async(event)=>{
-            event.preventDefault();
-            try{
-            this.setState({loading:true});
-            console.log("ana mashy S7")
-            const web3 = await getWeb3();
-            const accounts = await web3.eth.getAccounts();
-            const networkId = await web3.eth.net.getId();
-            const deployedNetwork2 = NerosNFT.networks[networkId];
-            console.log(this.state.addressInput)
-            const instance2 = new web3.eth.Contract(
-              NerosNFT.abi,
-              deployedNetwork2 && deployedNetwork2.address,
-            );
-            await instance2.methods.addOrRemoveAdmin(this.state.addressInput,true).send({
-                from:accounts[0]
-            }
-            )
-            this.setState({loading:false});
-            this.setState({success:true})}
-            catch(err){
-                this.setState({errorMessage:err.message})
-                this.setState({loading:false});
-
-            }
-        };
-
-          handleChange(event){
-            this.setState({addressInput:event.target.value});
-        }
+          
 
 
 
 
     render(){
+      console.log(this.state.fin)
+      
+      const employees = {
+        accounting: this.state.fin
+      };
+      var populate = employees.accounting.map(function (value) {
+        return(
+          
+            <SerivicesCard>
+              <ServicesIcon src={img} />
+              <SerivicesH2>{value.name}</SerivicesH2>
+              <SerivicesP>
+                Type: {value.description}
+              </SerivicesP>
+              <SerivicesP>
+                Quantity: {value.quantity}
+              </SerivicesP>
+              <Button2>Acquire NFT</Button2>
+            </SerivicesCard>
+          
+        )
+    });
 
       return(
 
         <SerivicesContainer>
           <SerivicesH1>NFTs for sale</SerivicesH1>
-          <SerivicesWrapperOwner>
-            <SerivicesCard>
-              <ServicesIcon src={"https://ipfs.io/ipfs/QmVRtrFSwGpr3gpyLvJCbcngUgpiR1FPmHXAyd5NJLQkf7"} />
-              <SerivicesH2>{this.state.name}</SerivicesH2>
-              <SerivicesP>
-                Type: {this.state.desc}
-              </SerivicesP>
-              <SerivicesP>
-                Quantity: {this.state.quantity}
-              </SerivicesP>
-            </SerivicesCard>
-          </SerivicesWrapperOwner>
+          <SerivicesWrapperOwnerAdmin>
+            {populate}
+            </SerivicesWrapperOwnerAdmin>
         </SerivicesContainer>
       )
 

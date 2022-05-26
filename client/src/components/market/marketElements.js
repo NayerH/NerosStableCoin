@@ -103,13 +103,13 @@ font-size:14px;
 `
 
 export const FormButton=styled.button`
-background:#000;
+background:#01bf71;
 padding:16px 0;
 border:none;
 margin:10px;
-border-radius:4px;
+border-radius:8px;
 color:#fff;
-font-size:20px;
+font-size:10px;
 cursor:pointer;`
 
 
@@ -139,7 +139,6 @@ font-size:1rem;
 text-align:center;`
 
 export const SerivicesContainer=styled.div`
-height:800px;
 display:flex;
 flex-direction:column;
 justify-content:center;

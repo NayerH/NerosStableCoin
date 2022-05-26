@@ -57,6 +57,22 @@ box-shadow:0 1px 3px rgba(0,0,0,0.9);
     padding:32px 32px;
 }
 `
+export const Form3=styled.form`
+background:#fff;
+max-width:400px;
+height:20px;
+width:100%;
+z-index:1;
+display:flex;
+margin:0 auto;
+padding:80px 32px;
+border-radius:4px;
+box-shadow:0 1px 3px rgba(0,0,0,0.9);
+
+@media screen and (max-width:480px){
+    padding:32px 32px;
+}
+`
 
 export const FormContent=styled.div`
 height:100%;
@@ -133,6 +149,9 @@ export const SerivicesH2=styled.h2`
 font-size:1.4rem;
 margin-bottom:50px;`
 
+export const SerivicesH3=styled.h2`
+font-size:1.4rem;
+margin-bottom:10px;`
 
 export const SerivicesP=styled.p`
 font-size:1rem;
@@ -177,6 +196,21 @@ grid-gap:16px;
 padding:0 50px;
 @media screen and (max-width:1000px){
     grid-template-columns:1fr 1fr;
+}
+@media screen and (max-width:480px){
+    height:1300px;
+}`
+
+export const SerivicesWrapperOwnerAdmin=styled.div`
+max-width:1000px;
+margin:0 auto;
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+align-items:center;
+grid-gap:16px;
+padding:0 50px;
+@media screen and (max-width:1000px){
+    grid-template-columns:1fr 1fr 1fr;
 }
 @media screen and (max-width:480px){
     height:1300px;
