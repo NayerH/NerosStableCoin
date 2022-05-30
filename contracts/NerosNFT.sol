@@ -55,8 +55,11 @@ contract NerosNFT is ERC721 {
          res[index++] = int(i);
       }
     }
-    res[index] = -1;
-    return res;
+    int[] memory resFinal = new int[](index);
+    for(uint i = 0; i < index; i++){
+      resFinal[i] = res[i];
+    }
+    return resFinal;
   }
 
   function getMyNFTs() public view returns (uint[] memory) {
