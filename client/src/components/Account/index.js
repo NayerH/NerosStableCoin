@@ -92,7 +92,7 @@ class Account extends Component{
                 NerosNFTCoin.abi,
                 deployedNetwork3 && deployedNetwork3.address,
               );
-              var arrayName = await instance2.methods.getMyNFTs().call();
+              var arrayName = await instance2.methods.getMyNFTs().call({ from:accounts[0] });
               console.log("myNFts:",arrayName)
               //Should be instance2 because it should be NerosNFT not NerosNFTCoin
               let isAdmin=await instance2.methods.admins(accounts[0]).call();
@@ -101,8 +101,8 @@ class Account extends Component{
               let owner2=await instance2.methods.owner().call();
               console.log(owner2)
 
-              let NFTs=await instance2.methods.getMyNFTs().call();
-              console.log(NFTs)
+              let forSale =await instance2.methods.getAllForSale().call();
+              console.log("getAllForSale: ", forSale)
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
               this.setState({ web3, accounts, contract: instance,balanceCurr:balance,balanceCurr2:balance2 });
