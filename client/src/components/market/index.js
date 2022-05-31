@@ -80,7 +80,8 @@ class market extends Component{
         quantity:[],
         desc:[],
         fin:[],
-        imgsrc:[]
+        imgsrc:[],
+        image:null
          };
 
          componentDidMount = async () => {
@@ -168,6 +169,7 @@ class market extends Component{
 
 
             }
+            
             this.setState({fin:employees.accounting})
             var allUsers = [];
 
@@ -195,7 +197,16 @@ class market extends Component{
 
           
 
+          onImageChange = event => {
+            if (event.target.files && event.target.files[0]) {
+              let img = event.target.files[0];
+              this.setState({
+                image: URL.createObjectURL(img)
+              });
+            }
+          };
 
+          
 
 
     render(){
@@ -204,11 +215,14 @@ class market extends Component{
       const employees = {
         accounting: this.state.fin
       };
+      console.log(employees.accounting)
+
+      //let srcc=displayImage(employees.accounting.image)
       var populate = employees.accounting.map(function (value) {
         return(
           
             <SerivicesCard>
-              <ServicesIcon src={img} />
+              <ServicesIcon src={value.image} />
               <SerivicesH2>{value.name}</SerivicesH2>
               <SerivicesP>
                 Type: {value.description}

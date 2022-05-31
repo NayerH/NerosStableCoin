@@ -198,7 +198,7 @@ class PaymentNFT extends Component{
 
         <Form.Checkbox required label='I agree to the Terms and Conditions' />
         <Message error header="Oops!" content={this.state.errorMessage} />
-        <Form.Button loading={this.state.loading} >Submit</Form.Button>
+        <Form.Button loading={this.state.loading} >Purchase</Form.Button>
       </Form>
       <Step.Group items={steps} />
       </Container>

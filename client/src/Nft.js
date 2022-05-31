@@ -1,4 +1,5 @@
 import React, { Component, useEffect, useState } from 'react';
+import axios from 'axios';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import {Message,Step,Select,Checkbox,Radio, Container, Header, Button,Card,Icon,Grid,Form ,Image} from 'semantic-ui-react';
@@ -29,8 +30,8 @@ class Nft extends Component{
         errorMessage:'',
         success:false,
         balanceCurr:0,
-        image:'',
-        id:''
+        id:'',
+        image: null
          };
 
          componentDidMount = async () => {
@@ -102,7 +103,7 @@ class Nft extends Component{
         name: "NeroNFT #" + id,
         description: stockName + " - Stocks",
         quantity: stocksQuatity,
-        image: imageURI
+        image: this.state.image
     })
 
     const results = await node.add(data)
@@ -166,6 +167,43 @@ class Nft extends Component{
             this.setState({image:event.target.value});
         }
 
+        onFileChange = event => {
+    
+          // Update the state
+          this.setState({ selectedFile: event.target.files[0] });
+        
+        };
+        
+        // On file upload (click the upload button)
+        onFileUpload = () => {
+        
+          // Create an object of formData
+          const formData = new FormData();
+        
+          // Update the formData object
+          formData.append(
+            "myFile",
+            this.state.selectedFile,
+            this.state.selectedFile.name
+          );
+        
+          // Details of the uploaded file
+          console.log(this.state.selectedFile);
+        
+          // Request made to the backend api
+          // Send formData object
+          axios.post("api/uploadfile", formData);
+        };
+
+        onImageChange = event => {
+          if (event.target.files && event.target.files[0]) {
+            let img = event.target.files[0];
+            this.setState({
+              image: URL.createObjectURL(img)
+            });
+          }
+        };
+
     render(){
         return(
           <div>
@@ -225,15 +263,27 @@ class Nft extends Component{
         </Form.Group>
         <div className="mb-1">
      NFT upload <span className="font-css top">*</span>
-     <div className="">
-         <input type="file" id="file-input" name="ImageStyle" value={this.state.image}
-        onChange={this.handleChange3.bind(this)}/>
-     </div>
+     {/* <div>
+            <h3>
+              Upload NFT
+            </h3>
+            <div>
+                <input type="file" onChange={this.onFileChange} />
+                <button onClick={this.onFileUpload}>
+                  Upload!
+                </button>
+            </div>
+        </div> */}
+        <div>
+            <img src={this.state.image} />
+            <h1>Select Image</h1>
+            <input type="file" name="myImage" onChange={this.onImageChange} />
+          </div>
 </div>
 
         <Form.Checkbox required label='I agree to the Terms and Conditions' />
         <Message error header="Oops!" content={this.state.errorMessage} />
-        <Form.Button loading={this.state.loading} >Transfer</Form.Button>
+        <Form.Button loading={this.state.loading} >Mint</Form.Button>
       </Form>
       </Container>
         </div></div>

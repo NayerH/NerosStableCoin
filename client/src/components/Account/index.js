@@ -53,8 +53,6 @@ class Account extends Component{
         enter1:false,
         enter2:false,
         currToken:0,
-        counter:0,
-        counter2:-1
          };
 
 
@@ -62,10 +60,6 @@ class Account extends Component{
 
          componentDidMount = async () => {
             try {
-            let count2 = window.localStorage.getItem('counter');
-            this.setState({counter:count2})
-             window.localStorage.setItem('counter', JSON.stringify(this.state.counter));
-             console.log("ana el counter yala",this.state.count)
               // Get network provider and web3 instance.
               const web3 = await getWeb3();
               // Use web3 to get the user's accounts.
@@ -116,9 +110,8 @@ class Account extends Component{
               console.log(this.state.admin2)
 
                let x=await instance2.methods.tokenCounter().call();
-              let count = window.localStorage.getItem('counter');
-              console.log("ana el count",count)
-              let token=await instance2.methods.tokenURI(count).call();
+              let tokenToCheck=await instance2.methods.tokenIdToCheck().call();
+              let token=await instance2.methods.tokenURI(tokenToCheck).call();
               this.setState({currToken:x})
               console.log("ana currToken:",x)
               // fetch(token)
@@ -132,8 +125,7 @@ class Account extends Component{
               .then(response => response.json())
               .then((res)=>{
                 this.setState({quantity:res.quantity,
-                name:res.name,desc:res.description})
-                console.log(res)
+                name:res.name,desc:res.description,})
 
               })
 
@@ -198,11 +190,6 @@ class Account extends Component{
               from:accounts[0]
           }
           )
-          let count = window.localStorage.getItem('counter');
-          count=count+1
-          this.setState({counter:count})
-          window.localStorage.setItem('counter', JSON.stringify(this.state.counter));
-          console.log("ana COunter after:",this.state.counter)
 
 
 
