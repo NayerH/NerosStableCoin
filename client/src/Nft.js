@@ -101,7 +101,7 @@ class Nft extends Component{
 
     let data = JSON.stringify({
         name: "NeroNFT #" + id,
-        description: stockName + " - Stocks",
+        description: stockName,
         quantity: stocksQuatity,
         image: this.state.image
     })

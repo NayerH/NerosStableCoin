@@ -4,6 +4,7 @@ import Neros from '../../contracts/Neros.json'
 import getWeb3 from "../../getWeb3";
 import NerosNFT from '../../contracts/NerosNFT.json'
 import NerosNFTCoin from '../../contracts/NerosNFTCoin.json'
+import GetStockPrice from '../../contracts/GetStockPrice.json'
 import {Form4,ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './marketElements'
 import prof from '../../images/prof.svg'
 import admin from '../../images/admin.svg'
@@ -82,7 +83,9 @@ class market extends Component{
         fin:[],
         imgsrc:[],
         image:null,
-        currentTokenAddress:0
+        currentTokenAddress:0,
+        currentTokenDesc:'',
+        currentTokenOwner:''
          };
 
          componentDidMount = async () => {
@@ -136,6 +139,8 @@ class market extends Component{
               this.setState({ web3, accounts, contract: instance,balanceCurr:balance,balanceCurr2:balance2 });
               this.setState({admin2:isAdmin,address:accounts,owner:owner2});
               console.log(this.state.admin2)
+              const ownerAddress=await instance2.methods.ownerOf(this.state.currentTokenAddress).call();
+              this.setState({currentTokenOwner:ownerAddress})
               const employees = {
                 accounting: []
               };
@@ -217,6 +222,7 @@ class market extends Component{
             const web3 = await getWeb3();
             const accounts = await web3.eth.getAccounts();
             const networkId = await web3.eth.net.getId();
+            const delay = ms => new Promise(res => setTimeout(res, ms));
             const deployedNetwork = Neros.networks[networkId];
             //console.log(this.state.addressInput)
             const instance = new web3.eth.Contract(
@@ -229,9 +235,20 @@ class market extends Component{
                 NerosNFT.abi,
                 deployedNetwork2 && deployedNetwork2.address,
               );
-              const ownerAddress=await instance2.methods.ownerOf(this.state.currentTokenAddress).call();
-            console.log("ana el current token address",this.state.currentTokenAddress)
-            await instance.methods.exchangeNFT(ownerAddress,this.state.currentTokenAddress,10).send({
+              const deployedNetwork3 = GetStockPrice.networks[networkId];
+
+              const instance3 = new web3.eth.Contract(
+                GetStockPrice.abi,
+                deployedNetwork3 && deployedNetwork3.address,
+              );
+              console.log("current token desc",this.state.currentTokenDesc)
+            await instance3.methods.requestStockPrice(this.state.currentTokenDesc).send({
+              from:accounts[0]
+          }
+          )
+            await delay(45000);
+            const currPrice=await instance3.methods.currentPrice().call();
+            await instance.methods.exchangeNFT(this.state.currentTokenOwner,this.state.currentTokenAddress,currPrice).send({
                 from:accounts[0]
             }
             )
@@ -251,8 +268,9 @@ class market extends Component{
             }
         };
 
-        handleClick(button) {
+        handleClick(button,button2) {
           this.setState({currentTokenAddress:button})
+          this.setState({currentTokenDesc:button2})
           console.log("men gowa e handleclik",this.state.currentTokenAddress)
   
   
@@ -282,7 +300,7 @@ class market extends Component{
               <SerivicesP>
                 Quantity: {value.quantity}
               </SerivicesP>
-              <button  onClick={this.handleClick.bind(this,value.id)}  class="ui positive  {this.state.isloading}  button">Acquire NFT</button>
+              <button  onClick={this.handleClick.bind(this,value.id,value.description)}  class="ui positive  {this.state.isloading}  button">Acquire NFT</button>
                 
             </SerivicesCard>
           
