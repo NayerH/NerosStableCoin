@@ -4,7 +4,7 @@ import Neros from '../../contracts/Neros.json'
 import getWeb3 from "../../getWeb3";
 import NerosNFT from '../../contracts/NerosNFT.json'
 import NerosNFTCoin from '../../contracts/NerosNFTCoin.json'
-import {ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './marketElements'
+import {Form4,ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './marketElements'
 import prof from '../../images/prof.svg'
 import admin from '../../images/admin.svg'
 import * as IPFS from 'ipfs-core'
@@ -81,7 +81,8 @@ class market extends Component{
         desc:[],
         fin:[],
         imgsrc:[],
-        image:null
+        image:null,
+        currentTokenAddress:0
          };
 
          componentDidMount = async () => {
@@ -128,7 +129,8 @@ class market extends Component{
               console.log(owner2)
 
               let NFTs=await instance2.methods.tokenCounter().call();
-              console.log(NFTs)
+              let forSale =await instance2.methods.getAllForSale().call();
+              console.log(forSale)
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
               this.setState({ web3, accounts, contract: instance,balanceCurr:balance,balanceCurr2:balance2 });
@@ -139,8 +141,8 @@ class market extends Component{
               };
               
 
-              for (let i = 0; i < NFTs; i++){
-              let token=await instance2.methods.tokenURI(i).call();
+              for (let i = 0; i < forSale.length; i++){
+              let token=await instance2.methods.tokenURI(forSale[i]).call();
               // fetch(token)
               // .then(response => response.json())
               // .then(res =>
@@ -206,23 +208,73 @@ class market extends Component{
             }
           };
 
+
+          onSubmit=async(event)=>{
+            event.preventDefault();
+            try{
+            this.setState({loading:true});
+            console.log("ana gowa onsubmit 3")
+            const web3 = await getWeb3();
+            const accounts = await web3.eth.getAccounts();
+            const networkId = await web3.eth.net.getId();
+            const deployedNetwork = Neros.networks[networkId];
+            //console.log(this.state.addressInput)
+            const instance = new web3.eth.Contract(
+              Neros.abi,
+              deployedNetwork && deployedNetwork.address,
+            );
+            const deployedNetwork2 = NerosNFT.networks[networkId];
+
+              const instance2 = new web3.eth.Contract(
+                NerosNFT.abi,
+                deployedNetwork2 && deployedNetwork2.address,
+              );
+              const ownerAddress=await instance2.methods.ownerOf(this.state.currentTokenAddress).call();
+            console.log("ana el current token address",this.state.currentTokenAddress)
+            await instance.methods.exchangeNFT(ownerAddress,this.state.currentTokenAddress,10).send({
+                from:accounts[0]
+            }
+            )
+    
+    
+    
+    
+            this.setState({loading:false});
+            this.setState({success:true})
+    
+          }
+    
+            catch(err){
+                this.setState({errorMessage:err.message})
+                this.setState({loading:false});
+    
+            }
+        };
+
+        handleClick(button) {
+          this.setState({currentTokenAddress:button})
+          console.log("men gowa e handleclik",this.state.currentTokenAddress)
+  
+  
+      }
+
           
 
 
     render(){
-      console.log(this.state.fin)
+
       
       const employees = {
         accounting: this.state.fin
       };
-      console.log(employees.accounting)
-
+      
+     
       //let srcc=displayImage(employees.accounting.image)
-      var populate = employees.accounting.map(function (value) {
+      let populate =  employees.accounting.map((value) => {
         return(
           
             <SerivicesCard>
-              <ServicesIcon src={value.image} />
+              <ServicesIcon src={img} />
               <SerivicesH2>{value.name}</SerivicesH2>
               <SerivicesP>
                 Type: {value.description}
@@ -230,19 +282,31 @@ class market extends Component{
               <SerivicesP>
                 Quantity: {value.quantity}
               </SerivicesP>
-              <Button2>Acquire NFT</Button2>
+              <button  onClick={this.handleClick.bind(this,value.id)}  class="ui positive  {this.state.isloading}  button">Acquire NFT</button>
+                
             </SerivicesCard>
           
         )
     });
+   
+    console.log(populate)
 
       return(
 
         <SerivicesContainer>
+          <Form4 onSubmit={this.onSubmit} error={this.state.errorMessage}>
+          <div style={{
+          display: 'flex',
+          margin:50,
+          alignItems: 'center',
+          justifyContent: 'center',
+      }}>
           <SerivicesH1>NFTs for sale</SerivicesH1>
+          </div>
           <SerivicesWrapperOwnerAdmin>
             {populate}
             </SerivicesWrapperOwnerAdmin>
+            </Form4>
         </SerivicesContainer>
       )
 

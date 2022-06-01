@@ -4,14 +4,14 @@ import Neros from '../../contracts/Neros.json'
 import getWeb3 from "../../getWeb3";
 import NerosNFT from '../../contracts/NerosNFT.json'
 import NerosNFTCoin from '../../contracts/NerosNFTCoin.json'
-import {SerivicesH3,Form3,SerivicesWrapperOwnerAdmin,ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './AccountElement'
+import {Form4,SerivicesH3,Form3,SerivicesWrapperOwnerAdmin,ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './AccountElement'
 import prof from '../../images/prof.svg'
 import admin from '../../images/admin.svg'
 import * as IPFS from 'ipfs-core'
 import { CID } from 'multiformats/cid'
 import { base58btc } from 'multiformats/bases/base58'
 import { base64 } from "multiformats/bases/base64"
-
+import { Button4 } from "../Button4";
 
 function show_image(src, width, height, alt) {
   var img = document.createElement("img");
@@ -53,6 +53,9 @@ class Account extends Component{
         enter1:false,
         enter2:false,
         currToken:0,
+        fin:[],
+        currentTokenAddress:2,
+        saleornot:true
          };
 
 
@@ -92,8 +95,11 @@ class Account extends Component{
                 NerosNFTCoin.abi,
                 deployedNetwork3 && deployedNetwork3.address,
               );
-              var arrayName = await instance2.methods.getMyNFTs().call({ from:accounts[0] });
-              console.log("myNFts:",arrayName)
+              var mynftsarray = await instance2.methods.getMyNFTs().call({ from:accounts[0] });
+              let lengtharr=mynftsarray.length
+
+              console.log("myNFts:",mynftsarray)
+              console.log("array length:",lengtharr)
               //Should be instance2 because it should be NerosNFT not NerosNFTCoin
               let isAdmin=await instance2.methods.admins(accounts[0]).call();
               console.log("isAdmin: ",isAdmin)
@@ -128,6 +134,44 @@ class Account extends Component{
                 name:res.name,desc:res.description,})
 
               })
+              const employees = {
+                accounting: []
+              };
+
+              for (let i = 0; i < lengtharr; i++){
+                let token=await instance2.methods.tokenURI(mynftsarray[i]).call();
+                let forSale=await instance2.methods.isForSale(mynftsarray[i]).call();
+                // fetch(token)
+                // .then(response => response.json())
+                // .then(res =>
+                //   fetch('https://ipfs.io/ipfs/' + res.image)
+                //   .then(responseImg => this.setState({imgsrc:responseImg.url}))
+                // )
+  
+                fetch(token)
+                .then(response => response.json())
+                .then((res)=>{
+                  // this.setState({quantity:[this.state.quantity,res.quantity],
+                  // name:[this.state.name,res.name],desc:[this.state.desc,res.description]})
+                   
+                  employees.accounting.push({ 
+                    "name" : res.name,
+                    "description"  : res.description,
+                    "quantity"       : res.quantity,
+                    "image":'https://ipfs.io/ipfs/'+res.image,
+                    "id":mynftsarray[i],
+                    "isforSale":forSale
+                });
+                // data[i].name=res.name
+                // data[i].description=res.description
+                // data[i].quantity=res.quantity
+  
+                })
+                console.log(employees)
+  
+  
+              }
+              this.setState({fin:employees.accounting})
 
 
             } catch (error) {
@@ -206,6 +250,41 @@ class Account extends Component{
           }
       };
 
+      onSubmit3=async(event)=>{
+        event.preventDefault();
+        try{
+        this.setState({loading:true});
+        console.log("ana gowa onsubmit 3")
+        const web3 = await getWeb3();
+        const accounts = await web3.eth.getAccounts();
+        const networkId = await web3.eth.net.getId();
+        const deployedNetwork2 = NerosNFT.networks[networkId];
+        //console.log(this.state.addressInput)
+        const instance2 = new web3.eth.Contract(
+          NerosNFT.abi,
+          deployedNetwork2 && deployedNetwork2.address,
+        );
+        console.log("ana el current token address",this.state.currentTokenAddress)
+        await instance2.methods.setForSale(this.state.currentTokenAddress,this.state.saleornot).send({
+            from:accounts[0]
+        }
+        )
+
+
+
+
+        this.setState({loading:false});
+        this.setState({success:true})
+
+      }
+
+        catch(err){
+            this.setState({errorMessage:err.message})
+            this.setState({loading:false});
+
+        }
+    };
+
 
 
           handleChange(event){
@@ -225,8 +304,74 @@ class Account extends Component{
 
 
       }
+      handleClick3(button,button2) {
+        this.setState({saleornot:button2})
+        this.setState({currentTokenAddress:button})
+        console.log("men gowa e handleclik",this.state.currentTokenAddress)
+
+
+    }
 
     render(){
+      
+      
+      const employees = {
+        accounting: this.state.fin
+      };
+
+      //let srcc=displayImage(employees.accounting.image)
+      var populate = employees.accounting.map((value) => {
+        if(!value.isforSale)
+        {
+        return(
+          
+          
+            <SerivicesCard>
+              <ServicesIcon src={value.image} />
+              <SerivicesH2>{value.name}</SerivicesH2>
+              <SerivicesP>
+                Type: {value.description}
+              </SerivicesP>
+              <SerivicesP>
+                Quantity: {value.quantity}
+              </SerivicesP>
+              <SerivicesP>
+                ID: {value.id}
+              </SerivicesP>
+              <div>
+              <button  onClick={this.handleClick3.bind(this,value.id,true)}  class="ui positive  {this.state.isloading}  button">Offer for sale</button>
+              </div>
+            </SerivicesCard>
+            
+     
+        )
+      }
+        else
+        {
+          return(
+            
+            <SerivicesCard>
+              <ServicesIcon src={value.image} />
+              <SerivicesH2>{value.name}</SerivicesH2>
+              <SerivicesP>
+                Type: {value.description}
+              </SerivicesP>
+              <SerivicesP>
+                Quantity: {value.quantity}
+              </SerivicesP>
+              <SerivicesP>
+                ID: {value.id}
+              </SerivicesP>
+              <div>
+              <button  onClick={ this.handleClick3.bind(this,value.id,false)}  class="ui negative  {this.state.isloading}  button">Cancel sale</button>
+                  </div>
+            </SerivicesCard>
+            
+         
+          )
+        }
+    });
+    
       if(this.state.address==this.state.owner)
       {
       return(
@@ -346,10 +491,18 @@ class Account extends Component{
   }
   else
   {
+   
     return(
       <SerivicesContainer>
+        <div style={{
+          display: 'flex',
+          margin:50,
+          alignItems: 'center',
+          justifyContent: 'center',
+      }}>
           <SerivicesH1>Account Summary</SerivicesH1>
-          <SerivicesWrapperOwner>
+          </div>
+          <SerivicesWrapper>
             <SerivicesCard>
               <ServicesIcon src={prof} />
               <SerivicesH2>Address:{this.state.address}</SerivicesH2>
@@ -366,12 +519,24 @@ class Account extends Component{
                 isOwner:False
               </SerivicesP>
             </SerivicesCard>
-            <SerivicesCard>
-              <ServicesIcon src={"https://ipfs.io/ipfs/QmVRtrFSwGpr3gpyLvJCbcngUgpiR1FPmHXAyd5NJLQkf7"} />
-              <SerivicesH2>My NFTs</SerivicesH2>
-
-            </SerivicesCard>
-          </SerivicesWrapperOwner>
+            </SerivicesWrapper>
+            
+          <SerivicesContainer >
+          <Form4 onSubmit={this.onSubmit3} error={this.state.errorMessage}>
+            <div style={{
+          display: 'flex',
+          margin:10,
+          alignItems: 'center',
+          justifyContent: 'center',
+      }}>
+          <SerivicesH1>My NFTs</SerivicesH1>
+          </div>
+          <SerivicesWrapperOwnerAdmin>
+            {populate}
+          </SerivicesWrapperOwnerAdmin>
+          </Form4>
+          </SerivicesContainer>
+          
 
         </SerivicesContainer>
 

@@ -151,6 +151,23 @@ background:#010606;
     height:1300px;
 }`
 
+
+export const Form4=styled.form`
+align-items:center;
+width:100%;
+z-index:1;
+display:flex;
+margin:0 auto;
+padding:80px 32px;
+
+
+@media screen and (max-width:480px){
+    padding:32px 32px;
+}
+
+`
+
+
 export const SerivicesWrapper=styled.div`
 max-width:1000px;
 margin:0 auto;
@@ -167,7 +184,7 @@ padding:0 50px;
 }`
 
 export const SerivicesWrapperOwner=styled.div`
-max-width:1000px;
+
 margin:0 auto;
 display:grid;
 grid-template-columns:1fr 1fr;

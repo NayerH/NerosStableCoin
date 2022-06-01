@@ -43,7 +43,7 @@ font-size:32px;
 `
 export const Form2=styled.form`
 background:#01bf71;
-max-width:400px;
+
 height:50px;
 width:100%;
 z-index:1;
@@ -59,7 +59,7 @@ box-shadow:0 1px 3px rgba(0,0,0,0.9);
 `
 export const Form3=styled.form`
 background:#fff;
-max-width:400px;
+
 height:20px;
 width:100%;
 z-index:1;
@@ -72,6 +72,16 @@ box-shadow:0 1px 3px rgba(0,0,0,0.9);
 @media screen and (max-width:480px){
     padding:32px 32px;
 }
+`
+
+export const Form4=styled.form`
+align-items:center;
+
+margin:0 auto;
+
+
+
+
 `
 
 export const FormContent=styled.div`
@@ -132,7 +142,7 @@ cursor:pointer;`
 export const SerivicesH1=styled.h1`
 font-size:2.5rem;
 color:#fff;
-margin-bottom:30px;
+margin-top:50px;
 @media screen and (max-width:480px){
     font-size:2rem;
 }`
@@ -158,7 +168,6 @@ font-size:1rem;
 text-align:center;`
 
 export const SerivicesContainer=styled.div`
-height:800px;
 display:flex;
 flex-direction:column;
 justify-content:center;
@@ -172,7 +181,6 @@ background:#010606;
 }`
 
 export const SerivicesWrapper=styled.div`
-max-width:1000px;
 margin:0 auto;
 display:grid;
 grid-template-columns:1fr;
@@ -202,7 +210,7 @@ padding:0 50px;
 }`
 
 export const SerivicesWrapperOwnerAdmin=styled.div`
-max-width:1000px;
+
 margin:0 auto;
 display:grid;
 grid-template-columns:1fr 1fr 1fr;
@@ -218,6 +226,7 @@ padding:0 50px;
 
 export const SerivicesCard=styled.div`
 display:flex;
+margin:50px;
 flex-direction:column;
 justify-content:flext-start;
 align-items:center;
