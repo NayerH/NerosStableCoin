@@ -1,6 +1,6 @@
 //jshint esversion: 8
 const path = require("path");
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv').config({path:__dirname+'/.env'});
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 module.exports = {

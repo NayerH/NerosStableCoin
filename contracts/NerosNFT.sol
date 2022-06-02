@@ -28,13 +28,13 @@ contract NerosNFT is ERC721 {
       return newItemId;
   }
 
-  function setTransferable(uint tokenId, bool transferable) public onlyAdmin {
-      tokenIdToCheck++;
+  function setTransferable(bool transferable) public onlyAdmin {
       if(transferable){
-        isTransferable[tokenId] = true;
+        isTransferable[tokenIdToCheck] = true;
       } else {
-        burn(tokenId);
+        burn(tokenIdToCheck);
       }
+      tokenIdToCheck++;
   }
 
   function setForSale(uint tokenId, bool forSale) public {

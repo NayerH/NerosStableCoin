@@ -55,7 +55,8 @@ class Account extends Component{
         currToken:0,
         fin:[],
         currentTokenAddress:2,
-        saleornot:true
+        saleornot:true,
+        responseImg: null
          };
 
 
@@ -120,18 +121,21 @@ class Account extends Component{
               let token=await instance2.methods.tokenURI(tokenToCheck).call();
               this.setState({currToken:x})
               console.log("ana currToken:",x)
-              // fetch(token)
-              // .then(response => response.json())
-              // .then(res =>
-              //   fetch('https://ipfs.io/ipfs/' + res.image)
-              //   .then(responseImg => console.log(responseImg))
-              // )
 
               fetch(token)
               .then(response => response.json())
               .then((res)=>{
-                this.setState({quantity:res.quantity,
-                name:res.name,desc:res.description,})
+                fetch('https://ipfs.io/ipfs/' + res.image)
+                .then(responseImg => {
+                  console.log("RESPONSE IMG: ",responseImg.url)
+                  this.setState({
+                    quantity:res.quantity,
+                    name:res.name,
+                    desc:res.description,
+                    responseImg: responseImg.url
+                  })
+                })
+
 
               })
               const employees = {
@@ -147,14 +151,14 @@ class Account extends Component{
                 //   fetch('https://ipfs.io/ipfs/' + res.image)
                 //   .then(responseImg => this.setState({imgsrc:responseImg.url}))
                 // )
-  
+
                 fetch(token)
                 .then(response => response.json())
                 .then((res)=>{
                   // this.setState({quantity:[this.state.quantity,res.quantity],
                   // name:[this.state.name,res.name],desc:[this.state.desc,res.description]})
-                   
-                  employees.accounting.push({ 
+
+                  employees.accounting.push({
                     "name" : res.name,
                     "description"  : res.description,
                     "quantity"       : res.quantity,
@@ -165,11 +169,11 @@ class Account extends Component{
                 // data[i].name=res.name
                 // data[i].description=res.description
                 // data[i].quantity=res.quantity
-  
+
                 })
                 console.log(employees)
-  
-  
+
+
               }
               this.setState({fin:employees.accounting})
 
@@ -230,7 +234,7 @@ class Account extends Component{
 
           console.log("ana COunter before:",this.state.counter)
           console.log(this.state.acceptOrReject)
-          await instance2.methods.setTransferable(this.state.counter,this.state.acceptOrReject).send({
+          await instance2.methods.setTransferable(this.state.acceptOrReject).send({
               from:accounts[0]
           }
           )
@@ -313,8 +317,8 @@ class Account extends Component{
     }
 
     render(){
-      
-      
+
+
       const employees = {
         accounting: this.state.fin
       };
@@ -324,8 +328,8 @@ class Account extends Component{
         if(!value.isforSale)
         {
         return(
-          
-          
+
+
             <SerivicesCard>
               <ServicesIcon src={value.image} />
               <SerivicesH2>{value.name}</SerivicesH2>
@@ -342,14 +346,14 @@ class Account extends Component{
               <button  onClick={this.handleClick3.bind(this,value.id,true)}  class="ui positive  {this.state.isloading}  button">Offer for sale</button>
               </div>
             </SerivicesCard>
-            
-     
+
+
         )
       }
         else
         {
           return(
-            
+
             <SerivicesCard>
               <ServicesIcon src={value.image} />
               <SerivicesH2>{value.name}</SerivicesH2>
@@ -366,12 +370,12 @@ class Account extends Component{
               <button  onClick={ this.handleClick3.bind(this,value.id,false)}  class="ui negative  {this.state.isloading}  button">Cancel sale</button>
                   </div>
             </SerivicesCard>
-            
-         
+
+
           )
         }
     });
-    
+
       if(this.state.address==this.state.owner)
       {
       return(
@@ -417,7 +421,7 @@ class Account extends Component{
               </Form2>
             </SerivicesCard>
             <SerivicesCard>
-              <ServicesIcon src={"https://ipfs.io/ipfs/QmVRtrFSwGpr3gpyLvJCbcngUgpiR1FPmHXAyd5NJLQkf7"} />
+              <ServicesIcon src={this.state.responseImg} />
               <SerivicesH3>NFTs pending</SerivicesH3>
               <Form3 onSubmit={this.onSubmit2} error={this.state.errorMessage}>
               <FormWrap>
@@ -491,7 +495,7 @@ class Account extends Component{
   }
   else
   {
-   
+
     return(
       <SerivicesContainer>
         <div style={{
@@ -520,7 +524,7 @@ class Account extends Component{
               </SerivicesP>
             </SerivicesCard>
             </SerivicesWrapper>
-            
+
           <SerivicesContainer >
           <Form4 onSubmit={this.onSubmit3} error={this.state.errorMessage}>
             <div style={{
@@ -536,7 +540,7 @@ class Account extends Component{
           </SerivicesWrapperOwnerAdmin>
           </Form4>
           </SerivicesContainer>
-          
+
 
         </SerivicesContainer>
 

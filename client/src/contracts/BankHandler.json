@@ -256,12 +256,12 @@
     "4": {
       "events": {},
       "links": {},
-      "address": "0xBCc562B76e91734EF89e3EE67FFc1fE2bf8661A5",
-      "transactionHash": "0xf7044e76db645c5460737031a03d657498427b60d2ba19f1117a90a535d6d6fe"
+      "address": "0xa45F0b3908129bE02D081494Cfc181f607a869eB",
+      "transactionHash": "0x25be09b69000e6f06f0a37a53ae5bc78427caff25583f135856b66656edd51d5"
     }
   },
   "schemaVersion": "3.4.6",
-  "updatedAt": "2022-05-30T20:07:15.138Z",
+  "updatedAt": "2022-06-01T23:46:06.862Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

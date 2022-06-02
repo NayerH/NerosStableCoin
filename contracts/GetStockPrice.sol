@@ -18,7 +18,7 @@ contract GetStockPrice is ChainlinkClient {
     setChainlinkOracle(ORACLE_ADDRESS);
     owner = msg.sender;
   }
-  function requestStockPrice(string memory ticker) public onlyOwner
+  function requestStockPrice(string memory ticker) public
   {
     bytes32 specId = stringToBytes32(JOBID);
     Chainlink.Request memory req = buildChainlinkRequest(specId, address(this), this.fulfillBytes.selector);
