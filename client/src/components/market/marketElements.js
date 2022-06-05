@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {Link} from 'react-router-dom'
+import {Link as LinkR} from 'react-router-dom'
 
 export const Container=styled.div`
 min-height:692px;
@@ -154,11 +155,11 @@ background:#010606;
 
 export const Form4=styled.form`
 align-items:center;
-width:100%;
+
 z-index:1;
 display:flex;
 margin:0 auto;
-padding:80px 32px;
+padding:80px 20px;
 
 
 @media screen and (max-width:480px){
@@ -182,6 +183,35 @@ padding:0 50px;
 @media screen and (max-width:480px){
     height:1300px;
 }`
+
+
+export const NavBtn =styled.nav`
+display:flex;
+align-items:center;
+
+@media screen and (max-width:768px){
+    display:none;
+}`
+
+export const NavBtnLink=styled.button`
+border-radius:50px;
+background:#01bf71;
+white-space:nowrap;
+padding:10px 22px;
+color: #010606;
+font-size:16px;
+outline:none;
+border:none;
+cursor:pointer;
+transition:all 0.2s ease-in-out;
+text-decoration:none;
+
+&:hover{
+    transition:all 0.2s ease-in-out;
+    background:#fff;
+    color:#010606;
+}
+`
 
 export const SerivicesWrapperOwner=styled.div`
 

@@ -4,7 +4,7 @@ import Neros from '../../contracts/Neros.json'
 import getWeb3 from "../../getWeb3";
 import NerosNFT from '../../contracts/NerosNFT.json'
 import NerosNFTCoin from '../../contracts/NerosNFTCoin.json'
-import {Form4,SerivicesH3,Form3,SerivicesWrapperOwnerAdmin,ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './AccountElement'
+import {NavBtn,NavBtnLink,Form4,SerivicesH3,Form3,SerivicesWrapperOwnerAdmin,ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './AccountElement'
 import prof from '../../images/prof.svg'
 import admin from '../../images/admin.svg'
 import * as IPFS from 'ipfs-core'
@@ -315,6 +315,10 @@ class Account extends Component{
 
 
     }
+    onSubmit2=async(event)=>{
+      event.preventDefault()
+      await this.setState({nothing:event})
+    }
 
     render(){
 
@@ -471,7 +475,7 @@ class Account extends Component{
               </SerivicesP>
             </SerivicesCard>
             <SerivicesCard>
-              <ServicesIcon src={"https://ipfs.io/ipfs/QmVRtrFSwGpr3gpyLvJCbcngUgpiR1FPmHXAyd5NJLQkf7"} />
+              <ServicesIcon src={this.state.responseImg} />
               <SerivicesH2>NFTs pending</SerivicesH2>
               <SerivicesP>
                 Name: {this.state.name}
@@ -483,9 +487,9 @@ class Account extends Component{
                 Quantity: {this.state.quantity}
               </SerivicesP>
               <div class="ui buttons">
-  <button  class="ui positive  button"loading={this.state.loading} >Accept</button>
+  <button onClick={() => this.handleClick2(true)} class="ui positive  button"loading={this.state.loading}>Accept</button>
   <div class="or"></div>
-  <button class="negative ui  button"loading={this.state.loading}>Burn</button>
+  <button onClick={() => this.handleClick2(false)} class="negative ui  button"loading={this.state.loading}>Burn</button>
 </div>
             </SerivicesCard>
 
@@ -539,6 +543,13 @@ class Account extends Component{
             {populate}
           </SerivicesWrapperOwnerAdmin>
           </Form4>
+          <Form4 onSubmit={this.onSubmit2} error={this.state.errorMessage}>
+              <NavBtn>
+                <NavBtnLink>
+                Load more
+                </NavBtnLink>
+              </NavBtn>
+            </Form4>
           </SerivicesContainer>
 
 

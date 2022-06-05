@@ -5,7 +5,7 @@ import getWeb3 from "../../getWeb3";
 import NerosNFT from '../../contracts/NerosNFT.json'
 import NerosNFTCoin from '../../contracts/NerosNFTCoin.json'
 import GetStockPrice from '../../contracts/GetStockPrice.json'
-import {Form4,ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './marketElements'
+import {NavBtn,NavBtnLink,Form4,ServicesIcon2,Form2,FormButton,FormContent,FormH1,FormInput,FormLabel,FormWrap,SerivicesContainer,SerivicesCard,SerivicesH11,SerivicesH1,SerivicesH2,SerivicesP,SerivicesWrapper,ServicesIcon,SerivicesWrapperOwner} from './marketElements'
 import prof from '../../images/prof.svg'
 import admin from '../../images/admin.svg'
 import * as IPFS from 'ipfs-core'
@@ -85,7 +85,11 @@ class market extends Component{
         image:null,
         currentTokenAddress:0,
         currentTokenDesc:'',
-        currentTokenOwner:''
+        currentTokenOwner:'',
+        nothing:'',
+        stockpr:0,
+        loadingfinish:false,
+        currentTokenQuantity:0
          };
 
          componentDidMount = async () => {
@@ -246,12 +250,11 @@ class market extends Component{
               from:accounts[0]
           }
           )
-            await delay(45000);
+            await delay(10000);
             const currPrice=await instance3.methods.currentPrice().call();
-            await instance.methods.exchangeNFT(this.state.currentTokenOwner,this.state.currentTokenAddress,currPrice).send({
-                from:accounts[0]
-            }
-            )
+            this.setState({stockpr:currPrice,loadingfinish:true})
+            console.log("ana el current stock price",currPrice)
+            
     
     
     
@@ -268,13 +271,62 @@ class market extends Component{
             }
         };
 
-        handleClick(button,button2) {
+        onSubmit3=async(event)=>{
+          event.preventDefault();
+          try{
+          this.setState({loading:true});
+          console.log("ana gowa onsubmit 3 aho omal heya msh sha3'ala leh")
+          const web3 = await getWeb3();
+          const accounts = await web3.eth.getAccounts();
+          const networkId = await web3.eth.net.getId();
+          const deployedNetwork = Neros.networks[networkId];
+            //console.log(this.state.addressInput)
+          const instance = new web3.eth.Contract(
+              Neros.abi,
+              deployedNetwork && deployedNetwork.address,
+            );
+            console.log("ana gowa onsubmit 3 aho omal heya msh sha3'ala lehhhhhh")
+          await instance.methods.exchangeNFT(this.state.currentTokenOwner,this.state.currentTokenAddress,this.state.stockpr).send({
+              from:accounts[0]
+          }
+          )
+          this.setState({loading:false});
+          this.setState({success:true})
+  
+        }
+  
+          catch(err){
+              this.setState({errorMessage:err.message})
+              this.setState({loading:false});
+  
+          }
+      };
+
+        handleClick(button,button2,button3) {
           this.setState({currentTokenAddress:button})
           this.setState({currentTokenDesc:button2})
+          this.setState({currentTokenQuantity:button3})
           console.log("men gowa e handleclik",this.state.currentTokenAddress)
   
   
       }
+
+       onSubmit2=async(event)=>{
+        event.preventDefault()
+        await this.setState({nothing:event})
+      }
+
+      handleClick2(button) {
+
+        this.setState({loadingfinish:button})
+
+      }
+      // handleClick3(button) {
+
+      //   this.onSubmit3
+
+      // }
+      
 
           
 
@@ -285,10 +337,9 @@ class market extends Component{
       const employees = {
         accounting: this.state.fin
       };
-      
-     
       //let srcc=displayImage(employees.accounting.image)
       let populate =  employees.accounting.map((value) => {
+        
         return(
           
             <SerivicesCard>
@@ -300,7 +351,7 @@ class market extends Component{
               <SerivicesP>
                 Quantity: {value.quantity}
               </SerivicesP>
-              <button  onClick={this.handleClick.bind(this,value.id,value.description)}  class="ui positive  {this.state.isloading}  button">Acquire NFT</button>
+              <button  onClick={this.handleClick.bind(this,value.id,value.description,value.quantity)}  class="ui positive  {this.state.isloading}  button">Acquire NFT</button>
                 
             </SerivicesCard>
           
@@ -308,6 +359,8 @@ class market extends Component{
     });
    
     console.log(populate)
+
+    if(!this.state.loadingfinish){
 
       return(
 
@@ -324,11 +377,63 @@ class market extends Component{
           <SerivicesWrapperOwnerAdmin>
             {populate}
             </SerivicesWrapperOwnerAdmin>
+            </Form4 >
+            <Form4 onSubmit={this.onSubmit2} error={this.state.errorMessage}>
+              <NavBtn>
+                <NavBtnLink>
+                Load more
+                </NavBtnLink>
+              </NavBtn>
             </Form4>
         </SerivicesContainer>
       )
+    }
+    else{
+      return(
+        <SerivicesContainer>
+          <SerivicesWrapperOwner>
+           <SerivicesCard>
+              <ServicesIcon src={img} />
+              <SerivicesP>
+                Type: {this.state.currentTokenDesc}
+              </SerivicesP>
+              <SerivicesP>
+                Quantity: {this.state.currentTokenQuantity}
+              </SerivicesP>
+              <SerivicesP>
+                Stock price: {this.state.stockpr/100} USD
+              </SerivicesP>
+            </SerivicesCard>
+          <Form4 onSubmit={this.onSubmit3} error={this.state.errorMessage}>
+          <div style={{
+                display: 'flex',
+                margin:100,
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+      <SerivicesH1> {this.state.currentTokenDesc} Stock price: {this.state.stockpr/100} USD</SerivicesH1>
+      </div>
+      <div style={{
+                display: 'flex',
+                margin:50,
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+      <SerivicesH1> Total Stock price: {(this.state.stockpr/100)*this.state.currentTokenQuantity} USD</SerivicesH1>
+      </div>
+      <div class="huge ui buttons">
+       <button  class="ui positive  button"loading={this.state.loading}>Buy</button>
+       <div class="or"></div>
+       <button  type="button" onClick={() => this.handleClick2(false)} class="negative ui  button"loading={this.state.loading}>Reject</button>
+       </div>
+       </Form4>
+       </SerivicesWrapperOwner>
+      </SerivicesContainer>
+      )
+    }
 
 }
 }
+
 
 export default market;
