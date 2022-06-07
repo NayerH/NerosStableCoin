@@ -71,31 +71,35 @@ contract ERC721 is IERC721, IERC721Metadata {
    }
 
    function _transfer(address from, address to, uint256 tokenId) internal {
-        require(from != address(0), "ERC721: from address entered cannot be the zero address");
-        require(to != address(0), "ERC721: to address entered cannot be the zero address");
-        require(owners[tokenId] == from, "ERC721: Token with entered ID is not owned by the from address");
-        require(isTransferable[tokenId], "ERC721: Token cannot be transfered yet as transfer of stock ownership is not yet verified");
-        require(isApprovedOrIsOwner(msg.sender, tokenId), "ERC721: Sender is neither the owner nor approved to do this transaction");
+      require((isApprovedOrIsOwner(tx.origin, tokenId) || isApprovedOrIsOwner(msg.sender, tokenId)), "ERC721: Sender is neither the owner nor approved to do this transaction");
+      _transferHelper(from, to, tokenId);
+   }
 
-        //reset approve for the token with a new owner
-        _approve(address(0), tokenId);
-        balances[from]--;
-        balances[to]++;
+   function _transferHelper(address from, address to, uint256 tokenId) internal {
+     require(from != address(0), "ERC721: from address entered cannot be the zero address");
+     require(to != address(0), "ERC721: to address entered cannot be the zero address");
+     require(owners[tokenId] == from, "ERC721: Token with entered ID is not owned by the from address");
+     require(isTransferable[tokenId], "ERC721: Token cannot be transfered yet as transfer of stock ownership is not yet verified");
 
-        //Remove from old array and input into new array
-        int index = getIndex(ownedTokens[from], tokenId);
-        if(index >= 0){
-          ownedTokens[from][uint(index)] = ownedTokens[from][ownedTokens[from].length - 1];
-          ownedTokens[from].pop();
-        }
-        ownedTokens[to].push(tokenId);
+     //reset approve for the token with a new owner
+     _approve(address(0), tokenId);
+     balances[from]--;
+     balances[to]++;
 
-        owners[tokenId] = to;
+     //Remove from old array and input into new array
+     int index = getIndex(ownedTokens[from], tokenId);
+     if(index >= 0){
+       ownedTokens[from][uint(index)] = ownedTokens[from][ownedTokens[from].length - 1];
+       ownedTokens[from].pop();
+     }
+     ownedTokens[to].push(tokenId);
 
-        //reset forSale
-        isForSale[tokenId] = false;
+     owners[tokenId] = to;
 
-        emit Transfer(from, to, tokenId);
+     //reset forSale
+     isForSale[tokenId] = false;
+
+     emit Transfer(from, to, tokenId);
    }
 
    //USE THIS
@@ -122,7 +126,7 @@ contract ERC721 is IERC721, IERC721Metadata {
    }
 
     function isApprovedOrIsOwner(address caller, uint tokenId) internal view returns (bool){
-        return (owners[tokenId] == caller) || getApproved(tokenId) == caller || isApprovedForAll(owners[tokenId], caller);
+        return owners[tokenId] == caller || getApproved(tokenId) == caller || isApprovedForAll(owners[tokenId], caller);
     }
 
     function safeMint(address to, uint256 tokenId) internal {

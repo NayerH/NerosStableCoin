@@ -73,6 +73,7 @@ contract NerosNFT is ERC721 {
 
   function exchangeNFT(address from, address to, uint256 tokenId) public {
     require(isForSale[tokenId], "NerosNFT: This token is not for sale");
-    safeTransferFrom(from, to, tokenId);
+    require((isApprovedOrIsOwner(tx.origin, tokenId) || isApprovedOrIsOwner(msg.sender, tokenId)), "NerosNFT: Sender is neither the owner nor approved to do this transaction");
+    _transferHelper(from, to, tokenId);
   }
 }

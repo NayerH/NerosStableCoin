@@ -28,7 +28,7 @@ contract NerosNFTCoin is ERC20 {
   function mintNFTCoin(address to, uint amount) public onlyAdmin {
     _mint(to, amount);
   }
-  function burnNFTCoin(address from, uint amount) public onlyAdmin {
+  function burnNFTCoin(address from, uint amount) public {
     _burn(from, amount);
   }
 
