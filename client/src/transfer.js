@@ -134,16 +134,17 @@ class transfer extends Component{
 
         <Form.Group widths='equal'>
           <Form.Input
-          //error={{ content: 'Please enter your first name', pointing: 'below' }}
+          type="number"
           fluid label='First name'
           placeholder='First name'
           id='form-input-first-name'
            />
-          <Form.Input  fluid label='Last name' placeholder='Last name' />
+          <Form.Input type="number"  fluid label='Last name' placeholder='Last name' />
 
         </Form.Group>
         <Form.Group widths='equal'>
         <Form.Input required
+        type="number"
         fluid label='Please enter the amount'
         placeholder='amount in $'
         value={this.state.amount}

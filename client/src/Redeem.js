@@ -159,12 +159,13 @@ class Redeem extends Component{
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Input
-          //error={{ content: 'Please enter your first name', pointing: 'below' }}
+          required
           fluid label='First name'
           placeholder='First name'
           id='form-input-first-name'
            />
-          <Form.Input fluid label='Last name' placeholder='Last name' />
+          <Form.Input required fluid label='Last name' placeholder='Last name' />
+        
           <Form.Select
             fluid
             label='Gender'
@@ -175,13 +176,15 @@ class Redeem extends Component{
         </Form.Group>
         <Form.Group widths='equal'>
 
-        <Form.Input fluid label='Card number' placeholder='Card number' />
-        <Form.Input fluid label='Security code' placeholder='Security code' />
-        <Form.Input fluid label='Card expiration' placeholder='MM YY' />
+        <Form.Input type="number" required fluid label='Card number' placeholder='Card number' />
+        <Form.Input type="number" maxLength='5' required fluid label='Security code' placeholder='Security code' />
+        <Form.Input type="number" required fluid label='Card expiration' placeholder='MM YY' />
 
         </Form.Group>
         <Form.Group widths='equal'>
         <Form.Input
+        type="number"
+        required
         fluid label='Please enter the amount'
         placeholder='amount in Neros'
         value={this.state.amount}

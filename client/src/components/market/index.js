@@ -89,7 +89,8 @@ class market extends Component{
         nothing:'',
         stockpr:0,
         loadingfinish:false,
-        currentTokenQuantity:0
+        currentTokenQuantity:0,
+        responseImg: null
          };
 
          componentDidMount = async () => {
@@ -169,12 +170,8 @@ class market extends Component{
                   "name" : res.name,
                   "description"  : res.description,
                   "quantity"       : res.quantity,
-                  "image":'https://ipfs.io/ipfs/'+res.image
+                  "image":'https://ipfs.io/ipfs/'+res.image,
               });
-              // data[i].name=res.name
-              // data[i].description=res.description
-              // data[i].quantity=res.quantity
-
               })
               console.log(employees)
 
@@ -183,19 +180,6 @@ class market extends Component{
             
             this.setState({fin:employees.accounting})
             var allUsers = [];
-
-// Populate users array
-            // for(var key in this.state.name) {
-            // allUsers.push(this.state.name[key]);
-            //  }
-            //  for(var key in this.state.desc) {
-            //     allUsers.push(this.state.desc[key]);
-            //      }
-            //      for(var key in this.state.quantity) {
-            //         allUsers.push(this.state.quantity[key]);
-            //          }
-            //     console.log(allUsers)
-
 
             } catch (error) {
               // Catch any errors for any of the above operations.
@@ -286,6 +270,9 @@ class market extends Component{
               deployedNetwork && deployedNetwork.address,
             );
             console.log("ana gowa onsubmit 3 aho omal heya msh sha3'ala lehhhhhh")
+            console.log("ana el token owner:" ,this.state.currentTokenOwner)
+            console.log("ana el token address:" ,this.state.currentTokenAddress)
+            console.log("ana el stock price:" ,this.state.stockpr)
           await instance.methods.exchangeNFT(this.state.currentTokenOwner,this.state.currentTokenAddress,this.state.stockpr).send({
               from:accounts[0]
           }
@@ -303,7 +290,9 @@ class market extends Component{
       };
 
         handleClick(button,button2,button3) {
-          this.setState({currentTokenAddress:button})
+          let x=button.slice(-1);
+          console.log("ana gowa el handleeclick wana el token id",x)
+          this.setState({currentTokenAddress:x})
           this.setState({currentTokenDesc:button2})
           this.setState({currentTokenQuantity:button3})
           console.log("men gowa e handleclik",this.state.currentTokenAddress)
@@ -343,7 +332,7 @@ class market extends Component{
         return(
           
             <SerivicesCard>
-              <ServicesIcon src={img} />
+              <ServicesIcon src={value.image} />
               <SerivicesH2>{value.name}</SerivicesH2>
               <SerivicesP>
                 Type: {value.description}
@@ -351,7 +340,7 @@ class market extends Component{
               <SerivicesP>
                 Quantity: {value.quantity}
               </SerivicesP>
-              <button  onClick={this.handleClick.bind(this,value.id,value.description,value.quantity)}  class="ui positive  {this.state.isloading}  button">Acquire NFT</button>
+              <button  onClick={this.handleClick.bind(this,value.name,value.description,value.quantity)}  class="ui positive button">Acquire NFT</button>
                 
             </SerivicesCard>
           

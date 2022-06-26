@@ -2,6 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import axios from 'axios';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
+import ownership from '../src/images/download.pdf'
 import {
   Message,
   Step,
@@ -28,6 +29,15 @@ import {Button2} from "./components/Button2";
 import {FaYandexInternational} from 'react-icons/fa';
 import NavGen from './components/NavGen';
 import * as IPFS from 'ipfs-core'
+
+
+class DownloadLink extends React.Component {
+  render() {
+      return (
+          <a href={this.props.src} download>{this.props.children}</a>
+      )
+  }
+}
 
 class Nft extends Component {
 
@@ -237,17 +247,16 @@ class Nft extends Component {
             <Form.Group widths='equal'>
               <Form.Input
                 //error={{ content: 'Please enter your first name', pointing: 'below' }}
+                required
                 fluid="fluid" label='First name' placeholder='First name' id='form-input-first-name'/>
-              <Form.Input fluid="fluid" label='Last name' placeholder='Last name'/>
+              <Form.Input required fluid="fluid" label='Last name' placeholder='Last name'/>
 
             </Form.Group>
             <Form.Group widths='equal'>
-              <Form.Input required="required" fluid="fluid" label='Please enter the number of stocks' placeholder='stocks' value={this.state.amount} onChange={this.handleChange.bind(this)}/>
+              <Form.Input type="number" required="required" fluid="fluid" label='Please enter the number of stocks' placeholder='stocks' value={this.state.amount} onChange={this.handleChange.bind(this)}/>
               <Form.Input required="required" fluid="fluid" label='Stock name' placeholder='name' value={this.state.name} onChange={this.handleChange2.bind(this)}/>
             </Form.Group>
-            <div className="mb-1">
-              NFT upload
-              <span className="font-css top">*</span>
+            
               {/* <div>
             <h3>
               Upload NFT
@@ -261,11 +270,38 @@ class Nft extends Component {
         </div> */
               }
               <div>
+                <div style={{
+                    fontSize:30,
+                    fontWeight: 'bold',
+                    color: '#01BF71',
+                    display: 'flex',
+                    margin: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                  Please fill this ownership form first
+                  </div>
+
+              <div style={{
+                    display: 'flex',
+                    margin: 30,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>  
+             <DownloadLink src={ownership}>Click Here to download the form</DownloadLink>
+             </div> 
+             </div>
+
+             {/* <div className="mb-1">
+              NFT upload
+              <span className="font-css top">*</span> */}
+
+              <div>
                 <img src={this.state.image}/>
-                <h1>Select Image</h1>
+                <h1>Select document to upload</h1>
                 <input type="file" name="myImage" onChange={this.onImageChange}/>
               </div>
-            </div>
+            {/* </div> */}
 
             <Form.Checkbox required="required" label='I agree to the Terms and Conditions'/>
             <Message error="error" header="Oops!" content={this.state.errorMessage}/>
