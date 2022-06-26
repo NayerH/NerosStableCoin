@@ -145,13 +145,6 @@ class Account extends Component{
               for (let i = 0; i < lengtharr; i++){
                 let token=await instance2.methods.tokenURI(mynftsarray[i]).call();
                 let forSale=await instance2.methods.isForSale(mynftsarray[i]).call();
-                // fetch(token)
-                // .then(response => response.json())
-                // .then(res =>
-                //   fetch('https://ipfs.io/ipfs/' + res.image)
-                //   .then(responseImg => this.setState({imgsrc:responseImg.url}))
-                // )
-
                 fetch(token)
                 .then(response => response.json())
                 .then((res)=>{
@@ -217,7 +210,7 @@ class Account extends Component{
             }
         };
 
-        onSubmit2=async(event)=>{
+        onSubmit22=async(event)=>{
           event.preventDefault();
           try{
           this.setState({loading:true});
@@ -305,6 +298,7 @@ class Account extends Component{
         handleClick2(button) {
 
           this.setState({acceptOrReject:button})
+          console.log("hi ana gowa el onclick2")
 
 
       }
@@ -427,7 +421,8 @@ class Account extends Component{
             <SerivicesCard>
               <ServicesIcon src={this.state.responseImg} />
               <SerivicesH3>NFTs pending</SerivicesH3>
-              <Form3 onSubmit={this.onSubmit2} error={this.state.errorMessage}>
+
+              <Form3 onSubmit={this.onSubmit22} error={this.state.errorMessage}>
               <FormWrap>
                 <FormContent>
               <SerivicesP>
@@ -440,13 +435,14 @@ class Account extends Component{
                 Quantity: {this.state.quantity}
               </SerivicesP>
               <div class="ui buttons">
-  <button onClick={() => this.handleClick2(true)} class="ui positive  button"loading={this.state.loading}>Accept</button>
-  <div class="or"></div>
-  <button onClick={() => this.handleClick2(false)} class="negative ui  button"loading={this.state.loading}>Burn</button>
-</div>
-</FormContent>
-</FormWrap>
-</Form3>
+               <button onClick={() => this.handleClick2(true)} class="ui positive button">Accept</button>
+               <div class="or"></div>
+               <button onClick={() => this.handleClick2(false)} class="negative ui  button">Burn</button>
+               </div>
+               </FormContent>
+               </FormWrap>
+             </Form3>
+
             </SerivicesCard>
           </SerivicesWrapperOwnerAdmin>
         </SerivicesContainer>

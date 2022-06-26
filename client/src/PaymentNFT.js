@@ -189,6 +189,7 @@ class PaymentNFT extends Component{
         </Form.Group>
         <Form.Group widths='equal'>
         <Form.Input required
+        type="number"
         fluid label='Please enter the amount of NROCs'
         placeholder='amount'
         value={this.state.amount}
