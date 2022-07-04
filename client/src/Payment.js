@@ -177,12 +177,11 @@ class Payment extends Component{
         <Form.Group widths='equal'>
           <Form.Input required
           type="text"
-          pattern="[A-Za-z]"
           fluid label='First name'
           placeholder='First name'
           id='form-input-first-name'
            />
-          <Form.Input type="text"  pattern="[A-Za-z]" required fluid label='Last name' placeholder='Last name' />
+          <Form.Input type="text"  required fluid label='Last name' placeholder='Last name' />
           <Form.Select
             fluid
             label='Gender'
@@ -195,7 +194,7 @@ class Payment extends Component{
 
         <Form.Input type="number" onkeypress="isInputNumber(event)" required fluid label='Card number' placeholder='Card number' />
         <Form.Input type="number" required fluid label='Security code' placeholder='Security code' />
-        <Form.Input type="number" required fluid label='Card expiration' placeholder='MM YY' />
+        <Form.Input required fluid label='Card expiration' placeholder='MM YY' />
 
         </Form.Group>
         <Form.Group widths='equal'>
